@@ -22,6 +22,7 @@ hooks()->add_action('after_invoice_added', 'asaas_after_invoice_added');
 hooks()->add_action('invoice_updated', 'asaas_after_invoice_updated');
 hooks()->add_action('before_invoice_deleted', 'asaas_before_invoice_deleted');
 hooks()->add_filter('module_asaas_action_links', 'module_asaas_action_links');
+hooks()->add_filter('get_dashboard_widgets', 'asaas_add_dashboard_widget');
 
 $CI = &get_instance();
 
@@ -343,4 +344,17 @@ function asaas_before_invoice_deleted($id)
         }
     }
     return $id;
+}
+
+/**
+ * Adiciona o widget do Asaas ao dashboard
+ * @param  array $widgets
+ * @return array
+ */
+function asaas_add_dashboard_widget($widgets) {
+    $widgets[] = [
+        'path' => 'asaas/dashboard/asaas_saldo',
+        'container' => 'left-8',
+    ];
+    return $widgets;
 }

@@ -1314,4 +1314,96 @@ class Asaas_gateway extends App_gateway {
         }
         return NULL;
     }
+
+    /**
+     * Obtém o saldo da conta Asaas
+     * @return array|null
+     */
+    public function get_account_balance()
+    {
+        $api_key = $this->ci->base_api->getApiKey();
+        $api_url = $this->ci->base_api->getUrlBase();
+        $useragente = $this->getSetting('useragente');
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $api_url . "/v3/finance/balance",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "access_token: " . $api_key,
+                "User-Agent: " . $useragente,
+                "Content-Type: application/json"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        if (curl_errno($curl)) {
+            log_activity('Erro na função get_account_balance: ' . curl_error($curl));
+            curl_close($curl);
+            return null;
+        }
+
+        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+
+        if ($http_code >= 200 && $http_code < 300) {
+            return json_decode($response, true);
+        } else {
+            log_activity('Erro ao obter saldo Asaas. HTTP Code: ' . $http_code . ' Response: ' . $response);
+            return null;
+        }
+    }
+
+    /**
+     * Obtém o extrato financeiro (transações) da conta Asaas
+     * @param int $limit Número de transações a retornar (padrão: 10)
+     * @param int $offset Offset para paginação (padrão: 0)
+     * @return array|null
+     */
+    public function get_financial_transactions($limit = 10, $offset = 0)
+    {
+        $api_key = $this->ci->base_api->getApiKey();
+        $api_url = $this->ci->base_api->getUrlBase();
+        $useragente = $this->getSetting('useragente');
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $api_url . "/v3/financialTransactions?limit=" . $limit . "&offset=" . $offset,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "access_token: " . $api_key,
+                "User-Agent: " . $useragente,
+                "Content-Type: application/json"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        if (curl_errno($curl)) {
+            log_activity('Erro na função get_financial_transactions: ' . curl_error($curl));
+            curl_close($curl);
+            return null;
+        }
+
+        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+
+        if ($http_code >= 200 && $http_code < 300) {
+            return json_decode($response, true);
+        } else {
+            log_activity('Erro ao obter extrato Asaas. HTTP Code: ' . $http_code . ' Response: ' . $response);
+            return null;
+        }
+    }
 }

@@ -28,8 +28,8 @@ if ($balance && isset($balance['balance'])) {
 if ($balance) {
     // transferring = Split em Repasses
     $split_balance = $balance['transferring'] ?? 0;
-    // receivingNow = Aguardando Pagamentos (a receber)
-    $pending_balance = $balance['receivingNow'] ?? 0;
+    // awaiting = Aguardando Pagamentos (pagamentos confirmados mas ainda não disponíveis)
+    $pending_balance = $balance['awaiting'] ?? 0;
 }
 ?>
 
@@ -175,40 +175,58 @@ if ($balance) {
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var toggleBtn = document.getElementById('toggle-balance-visibility');
-    var balanceValue = document.querySelector('.balance-value');
-    var realValue = balanceValue.getAttribute('data-value');
-    var isHidden = localStorage.getItem('asaas_balance_hidden') !== 'false'; // Padrão: oculto
-    
-    // Aplica estado inicial
-    if (isHidden) {
-        balanceValue.textContent = '**********';
-        toggleBtn.querySelector('i').classList.remove('fa-eye');
-        toggleBtn.querySelector('i').classList.add('fa-eye-slash');
+(function() {
+    // Aguarda o DOM estar pronto
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initBalanceToggle);
     } else {
-        balanceValue.textContent = 'R$ ' + realValue;
-        toggleBtn.querySelector('i').classList.remove('fa-eye-slash');
-        toggleBtn.querySelector('i').classList.add('fa-eye');
+        initBalanceToggle();
     }
     
-    // Toggle ao clicar
-    toggleBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        isHidden = !isHidden;
+    function initBalanceToggle() {
+        var toggleBtn = document.getElementById('toggle-balance-visibility');
+        var balanceValue = document.querySelector('.balance-value');
         
-        if (isHidden) {
-            balanceValue.textContent = '**********';
-            toggleBtn.querySelector('i').classList.remove('fa-eye');
-            toggleBtn.querySelector('i').classList.add('fa-eye-slash');
-        } else {
-            balanceValue.textContent = 'R$ ' + realValue;
-            toggleBtn.querySelector('i').classList.remove('fa-eye-slash');
-            toggleBtn.querySelector('i').classList.add('fa-eye');
+        if (!toggleBtn || !balanceValue) {
+            console.error('Elementos do widget Asaas não encontrados');
+            return;
         }
         
-        // Salva preferência
-        localStorage.setItem('asaas_balance_hidden', isHidden);
-    });
-});
+        var realValue = balanceValue.getAttribute('data-value');
+        if (!realValue) {
+            console.error('Valor do saldo não encontrado no data-value');
+            return;
+        }
+        
+        // Verifica se está oculto (padrão: sim)
+        var isHidden = localStorage.getItem('asaas_balance_hidden') !== 'false';
+        
+        // Aplica estado inicial
+        updateBalanceDisplay(isHidden);
+        
+        // Toggle ao clicar
+        toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            isHidden = !isHidden;
+            updateBalanceDisplay(isHidden);
+            
+            // Salva preferência
+            localStorage.setItem('asaas_balance_hidden', isHidden.toString());
+        });
+        
+        function updateBalanceDisplay(hide) {
+            var icon = toggleBtn.querySelector('i');
+            
+            if (hide) {
+                balanceValue.textContent = '**********';
+                icon.className = 'fa fa-eye-slash';
+            } else {
+                balanceValue.textContent = 'R$ ' + realValue;
+                icon.className = 'fa fa-eye';
+            }
+        }
+    }
+})();
 </script>

@@ -81,8 +81,8 @@ if ($balance) {
                         <div class="panel_s">
                             <div class="panel-body text-center" style="background-color: #f9f9f9; padding: 15px;">
                                 <h5 class="text-muted" style="margin-top: 0;">Saldo Atual</h5>
-                                <h3 class="text-success bold balance-value" style="margin-bottom: 0;" data-value="<?php echo number_format($available_balance, 2, ',', '.'); ?>">
-                                    **********
+                                <h3 class="text-success bold" style="margin-bottom: 0;">
+                                    <span id="balance-value" data-value="<?php echo number_format($available_balance, 2, ',', '.'); ?>">**********</span>
                                 </h3>
                             </div>
                         </div>
@@ -176,25 +176,19 @@ if ($balance) {
 
 <script>
 (function() {
-    // Aguarda o DOM estar pronto
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initBalanceToggle);
-    } else {
-        initBalanceToggle();
-    }
+    'use strict';
     
+    // Função principal de inicialização
     function initBalanceToggle() {
         var toggleBtn = document.getElementById('toggle-balance-visibility');
-        var balanceValue = document.querySelector('.balance-value');
+        var balanceValue = document.getElementById('balance-value');
         
         if (!toggleBtn || !balanceValue) {
-            console.error('Elementos do widget Asaas não encontrados');
             return;
         }
         
         var realValue = balanceValue.getAttribute('data-value');
         if (!realValue) {
-            console.error('Valor do saldo não encontrado no data-value');
             return;
         }
         
@@ -205,28 +199,32 @@ if ($balance) {
         updateBalanceDisplay(isHidden);
         
         // Toggle ao clicar
-        toggleBtn.addEventListener('click', function(e) {
+        toggleBtn.onclick = function(e) {
             e.preventDefault();
-            e.stopPropagation();
-            
             isHidden = !isHidden;
             updateBalanceDisplay(isHidden);
-            
-            // Salva preferência
             localStorage.setItem('asaas_balance_hidden', isHidden.toString());
-        });
+        };
         
         function updateBalanceDisplay(hide) {
             var icon = toggleBtn.querySelector('i');
             
             if (hide) {
-                balanceValue.textContent = '**********';
+                balanceValue.innerHTML = '**********';
                 icon.className = 'fa fa-eye-slash';
             } else {
-                balanceValue.textContent = 'R$ ' + realValue;
+                balanceValue.innerHTML = 'R$ ' + realValue;
                 icon.className = 'fa fa-eye';
             }
         }
+    }
+    
+    // Aguarda o DOM estar pronto
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initBalanceToggle);
+    } else {
+        // Se o DOM já estiver pronto, executa com um pequeno delay para garantir
+        setTimeout(initBalanceToggle, 100);
     }
 })();
 </script>

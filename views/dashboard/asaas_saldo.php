@@ -5,9 +5,12 @@
 $CI = &get_instance();
 $CI->load->library('asaas_gateway');
 
+// Obtém o filtro de dias da URL (padrão: hoje)
+$days_filter = isset($_GET['asaas_days']) ? (int)$_GET['asaas_days'] : 0;
+
 // Obtém o saldo e as transações
 $balance = $CI->asaas_gateway->get_account_balance();
-$transactions = $CI->asaas_gateway->get_financial_transactions(10, 0);
+$transactions = $CI->asaas_gateway->get_financial_transactions(50, 0, $days_filter);
 
 // Valores padrão caso a API falhe
 $split_balance = 0;
@@ -24,7 +27,8 @@ if ($balance && isset($balance['balance'])) {
 // Verifica se há dados de split e pending (a API pode não retornar esses campos)
 if ($balance) {
     $split_balance = $balance['splitBalance'] ?? 0;
-    $pending_balance = $balance['pendingBalance'] ?? 0;
+    // Corrigindo: awaiting é o campo correto para pagamentos pendentes
+    $pending_balance = $balance['awaiting'] ?? 0;
 }
 ?>
 
@@ -35,6 +39,11 @@ if ($balance) {
             
             <h4 class="no-margin">
                 <i class="fa fa-money"></i> Saldo Asaas
+                <span class="pull-right">
+                    <a href="javascript:void(0);" id="toggle-balance-visibility" style="font-size: 18px;" title="Mostrar/Ocultar Saldo">
+                        <i class="fa fa-eye"></i>
+                    </a>
+                </span>
             </h4>
             <hr class="hr-panel-heading" />
 
@@ -71,7 +80,7 @@ if ($balance) {
                         <div class="panel_s">
                             <div class="panel-body text-center" style="background-color: #f9f9f9; padding: 15px;">
                                 <h5 class="text-muted" style="margin-top: 0;">Saldo Atual</h5>
-                                <h3 class="text-success bold" style="margin-bottom: 0;">
+                                <h3 class="text-success bold balance-value" style="margin-bottom: 0;">
                                     R$ <?php echo number_format($available_balance, 2, ',', '.'); ?>
                                 </h3>
                             </div>
@@ -81,6 +90,15 @@ if ($balance) {
 
                 <!-- Tabela de Extrato -->
                 <h4 class="mtop20">Extrato Detalhado</h4>
+                
+                <!-- Filtros de Período -->
+                <div class="btn-group mtop10 mbot10" role="group">
+                    <a href="?asaas_days=0" class="btn btn-sm <?php echo $days_filter == 0 ? 'btn-primary' : 'btn-default'; ?>">Hoje</a>
+                    <a href="?asaas_days=7" class="btn btn-sm <?php echo $days_filter == 7 ? 'btn-primary' : 'btn-default'; ?>">7 dias</a>
+                    <a href="?asaas_days=15" class="btn btn-sm <?php echo $days_filter == 15 ? 'btn-primary' : 'btn-default'; ?>">15 dias</a>
+                    <a href="?asaas_days=30" class="btn btn-sm <?php echo $days_filter == 30 ? 'btn-primary' : 'btn-default'; ?>">30 dias</a>
+                </div>
+                
                 <hr />
                 
                 <?php if ($transactions && isset($transactions['data']) && count($transactions['data']) > 0): ?>
@@ -89,7 +107,7 @@ if ($balance) {
                             <thead>
                                 <tr>
                                     <th>Data</th>
-                                    <th>Referência</th>
+                                    <th>ID Transação</th>
                                     <th>Descrição</th>
                                     <th class="text-right">Valor</th>
                                     <th class="text-right">Saldo</th>
@@ -99,6 +117,7 @@ if ($balance) {
                                 <?php foreach ($transactions['data'] as $transaction): ?>
                                     <?php
                                     $date = isset($transaction['date']) ? date('d/m/Y', strtotime($transaction['date'])) : '-';
+                                    $transaction_id = $transaction['id'] ?? '-';
                                     $type = $transaction['type'] ?? '-';
                                     $description = $transaction['description'] ?? $type;
                                     $value = $transaction['value'] ?? 0;
@@ -109,7 +128,7 @@ if ($balance) {
                                     ?>
                                     <tr>
                                         <td><?php echo $date; ?></td>
-                                        <td><?php echo $type; ?></td>
+                                        <td><?php echo $transaction_id; ?></td>
                                         <td><?php echo $description; ?></td>
                                         <td class="text-right <?php echo $value_class; ?>">
                                             <strong>R$ <?php echo number_format($value, 2, ',', '.'); ?></strong>
@@ -139,4 +158,55 @@ if ($balance) {
     .mtop20 {
         margin-top: 20px;
     }
+    .mtop10 {
+        margin-top: 10px;
+    }
+    .mbot10 {
+        margin-bottom: 10px;
+    }
+    .balance-value.hidden-balance {
+        filter: blur(8px);
+        user-select: none;
+    }
+    #toggle-balance-visibility {
+        cursor: pointer;
+        text-decoration: none;
+    }
+    #toggle-balance-visibility:hover {
+        opacity: 0.7;
+    }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var toggleBtn = document.getElementById('toggle-balance-visibility');
+    var balanceValue = document.querySelector('.balance-value');
+    var isHidden = localStorage.getItem('asaas_balance_hidden') === 'true';
+    
+    // Aplica estado inicial
+    if (isHidden) {
+        balanceValue.classList.add('hidden-balance');
+        toggleBtn.querySelector('i').classList.remove('fa-eye');
+        toggleBtn.querySelector('i').classList.add('fa-eye-slash');
+    }
+    
+    // Toggle ao clicar
+    toggleBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        isHidden = !isHidden;
+        
+        if (isHidden) {
+            balanceValue.classList.add('hidden-balance');
+            toggleBtn.querySelector('i').classList.remove('fa-eye');
+            toggleBtn.querySelector('i').classList.add('fa-eye-slash');
+        } else {
+            balanceValue.classList.remove('hidden-balance');
+            toggleBtn.querySelector('i').classList.remove('fa-eye-slash');
+            toggleBtn.querySelector('i').classList.add('fa-eye');
+        }
+        
+        // Salva preferência
+        localStorage.setItem('asaas_balance_hidden', isHidden);
+    });
+});
+</script>

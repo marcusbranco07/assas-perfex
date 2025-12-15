@@ -1494,17 +1494,30 @@ class Asaas_gateway extends App_gateway
      * Obtém o extrato financeiro da conta Asaas
      * @param int $limit Número de registros a retornar (padrão: 10)
      * @param int $offset Offset para paginação (padrão: 0)
+     * @param int $days Filtro de dias (0=hoje, 7=7dias, 15=15dias, 30=30dias)
      * @return array|null Retorna array com transações ou null em caso de erro
      */
-    public function get_financial_transactions($limit = 10, $offset = 0)
+    public function get_financial_transactions($limit = 10, $offset = 0, $days = 0)
     {
         $api_key = $this->ci->base_api->getApiKey();
         $api_url = $this->ci->base_api->getUrlBase();
         $useragente = $this->getSetting('useragente');
         
+        // Monta a URL base
+        $url = $api_url . "/v3/financialTransactions?limit=" . $limit . "&offset=" . $offset;
+        
+        // Adiciona filtro de data se especificado
+        if ($days > 0) {
+            $date_from = date('Y-m-d', strtotime("-{$days} days"));
+            $url .= "&startDate=" . $date_from;
+        } else if ($days == 0) {
+            // Apenas hoje
+            $url .= "&startDate=" . date('Y-m-d');
+        }
+        
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => $api_url . "/v3/financialTransactions?limit=" . $limit . "&offset=" . $offset,
+            CURLOPT_URL            => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING       => "",
             CURLOPT_MAXREDIRS      => 10,

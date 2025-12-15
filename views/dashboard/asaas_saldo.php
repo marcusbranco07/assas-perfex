@@ -26,9 +26,10 @@ if ($balance && isset($balance['balance'])) {
 
 // Verifica se há dados de split e pending (a API pode não retornar esses campos)
 if ($balance) {
-    $split_balance = $balance['splitBalance'] ?? 0;
-    // Corrigindo: awaiting é o campo correto para pagamentos pendentes
-    $pending_balance = $balance['awaiting'] ?? 0;
+    // transferring = Split em Repasses
+    $split_balance = $balance['transferring'] ?? 0;
+    // receivingNow = Aguardando Pagamentos (a receber)
+    $pending_balance = $balance['receivingNow'] ?? 0;
 }
 ?>
 
@@ -41,7 +42,7 @@ if ($balance) {
                 <i class="fa fa-money"></i> Saldo Asaas
                 <span class="pull-right">
                     <a href="javascript:void(0);" id="toggle-balance-visibility" style="font-size: 18px;" title="Mostrar/Ocultar Saldo">
-                        <i class="fa fa-eye"></i>
+                        <i class="fa fa-eye-slash"></i>
                     </a>
                 </span>
             </h4>
@@ -80,8 +81,8 @@ if ($balance) {
                         <div class="panel_s">
                             <div class="panel-body text-center" style="background-color: #f9f9f9; padding: 15px;">
                                 <h5 class="text-muted" style="margin-top: 0;">Saldo Atual</h5>
-                                <h3 class="text-success bold balance-value" style="margin-bottom: 0;">
-                                    R$ <?php echo number_format($available_balance, 2, ',', '.'); ?>
+                                <h3 class="text-success bold balance-value" style="margin-bottom: 0;" data-value="<?php echo number_format($available_balance, 2, ',', '.'); ?>">
+                                    **********
                                 </h3>
                             </div>
                         </div>
@@ -164,10 +165,6 @@ if ($balance) {
     .mbot10 {
         margin-bottom: 10px;
     }
-    .balance-value.hidden-balance {
-        filter: blur(8px);
-        user-select: none;
-    }
     #toggle-balance-visibility {
         cursor: pointer;
         text-decoration: none;
@@ -181,13 +178,18 @@ if ($balance) {
 document.addEventListener('DOMContentLoaded', function() {
     var toggleBtn = document.getElementById('toggle-balance-visibility');
     var balanceValue = document.querySelector('.balance-value');
-    var isHidden = localStorage.getItem('asaas_balance_hidden') === 'true';
+    var realValue = balanceValue.getAttribute('data-value');
+    var isHidden = localStorage.getItem('asaas_balance_hidden') !== 'false'; // Padrão: oculto
     
     // Aplica estado inicial
     if (isHidden) {
-        balanceValue.classList.add('hidden-balance');
+        balanceValue.textContent = '**********';
         toggleBtn.querySelector('i').classList.remove('fa-eye');
         toggleBtn.querySelector('i').classList.add('fa-eye-slash');
+    } else {
+        balanceValue.textContent = 'R$ ' + realValue;
+        toggleBtn.querySelector('i').classList.remove('fa-eye-slash');
+        toggleBtn.querySelector('i').classList.add('fa-eye');
     }
     
     // Toggle ao clicar
@@ -196,11 +198,11 @@ document.addEventListener('DOMContentLoaded', function() {
         isHidden = !isHidden;
         
         if (isHidden) {
-            balanceValue.classList.add('hidden-balance');
+            balanceValue.textContent = '**********';
             toggleBtn.querySelector('i').classList.remove('fa-eye');
             toggleBtn.querySelector('i').classList.add('fa-eye-slash');
         } else {
-            balanceValue.classList.remove('hidden-balance');
+            balanceValue.textContent = 'R$ ' + realValue;
             toggleBtn.querySelector('i').classList.remove('fa-eye-slash');
             toggleBtn.querySelector('i').classList.add('fa-eye');
         }

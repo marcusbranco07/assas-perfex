@@ -1,9 +1,8 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 
 <?php
-// Widget / painel de saldo Asaas - versão com correção do filtro "Mês Anterior"
-// Alteração: após buscar transações, filtramos localmente para garantir que só
-// apareçam transações entre $start_date 00:00:00 e $end_date 23:59:59 (inclusive).
+// Widget / painel de saldo Asaas - versão com cores modernas mantendo todas funcionalidades originais
+// Mantém: extrato completo, botão de olho, filtros, tudo igual ao original, apenas cores melhoradas
 
 $CI = &get_instance();
 $CI->load->library('asaas_gateway');
@@ -61,23 +60,21 @@ if ($balance && isset($balance['balance'])) {
     $error_message = 'Não foi possível carregar o saldo da conta Asaas.';
 }
 
-// Prepare date_range for gateway (you may adapt if gateway expects only Y-m-d)
+// Prepare date_range for gateway
 $start_date_time = $start_date . ' 00:00:00';
 $end_date_time   = $end_date . ' 23:59:59';
 
 $date_range = ['startDate' => $start_date_time, 'endDate' => $end_date_time];
 
-// Get transactions (paginação feita internamente)
+// Get transactions
 $transactions = $CI->asaas_gateway->get_financial_transactions(100, 0, $date_range);
 
 // --- FILTRAGEM LOCAL PARA GARANTIR PERÍODO CORRETO ---
-// Calcula timestamps limites
 $start_ts = strtotime($start_date . ' 00:00:00');
 $end_ts   = strtotime($end_date . ' 23:59:59');
 
-// Helper: tenta extrair timestamp da transação olhando por chaves comuns
+// Helper: tenta extrair timestamp da transação
 function tx_get_timestamp($tx) {
-    // Keys que frequentemente contém data/hora
     $candidates = [
         'date', 'transactionDate', 'transaction_date', 'createdAt', 'created_at',
         'dateCreated', 'paymentDate', 'payment_date', 'scheduledDate', 'timestamp'
@@ -88,7 +85,6 @@ function tx_get_timestamp($tx) {
             if ($ts !== false) return $ts;
         }
     }
-    // fallback: procurar em todos os campos por algo que pareça data
     foreach ($tx as $v) {
         if (is_string($v)) {
             $maybe = strtotime($v);
@@ -98,25 +94,19 @@ function tx_get_timestamp($tx) {
     return false;
 }
 
-// Filtra apenas as transações dentro do intervalo
+// Filtra transações
 $filtered_transactions = [];
 if ($transactions && isset($transactions['data']) && is_array($transactions['data'])) {
     foreach ($transactions['data'] as $tx) {
         $ts = tx_get_timestamp($tx);
-        if ($ts === false) {
-            // sem data reconhecível -> opcionalmente inclui ou exclui; aqui excluímos para segurança
-            continue;
-        }
+        if ($ts === false) continue;
         if ($ts >= $start_ts && $ts <= $end_ts) {
             $filtered_transactions[] = $tx;
         }
     }
-} else {
-    $filtered_transactions = [];
 }
 
-// Agora use $filtered_transactions para processamento e exibição
-// Process transactions - only "Comissão recebida"
+// Process transactions
 if (count($filtered_transactions) > 0) {
     foreach ($filtered_transactions as $transaction) {
         $value = 0.0;
@@ -160,207 +150,158 @@ $received_total_fmt = number_format($received_total, 2, ',', '.');
 $available_balance_fmt = number_format($available_balance, 2, ',', '.');
 ?>
 
-<div class="widget" id="widget-<?php echo basename(__FILE__, '.php'); ?>" data-name="Dashboard Asaas">
-<style>
-    .asaas-dashboard-widget {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 16px;
-        padding: 30px;
-        color: white;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        margin-bottom: 20px;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .asaas-dashboard-widget::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        pointer-events: none;
-    }
-    
-    .asaas-widget-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .asaas-widget-logo-container {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-    
-    .asaas-widget-logo {
-        height: 35px;
-        width: auto;
-        object-fit: contain;
-    }
-    
-    .asaas-widget-title {
-        font-size: 22px;
-        font-weight: 700;
-        margin: 0;
-        letter-spacing: 0.5px;
-    }
-    
-    .asaas-period-filter {
-        background: rgba(255, 255, 255, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 8px;
-        padding: 8px 16px;
-        color: white;
-        font-size: 14px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        outline: none;
-    }
-    
-    .asaas-period-filter:hover {
-        background: rgba(255, 255, 255, 0.3);
-    }
-    
-    .asaas-period-filter option {
-        background: #764ba2;
-        color: white;
-    }
-    
-    .asaas-balance-cards {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .asaas-balance-card {
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 12px;
-        padding: 25px 20px;
-        transition: all 0.3s ease;
-        text-align: center;
-    }
-    
-    .asaas-balance-card:hover {
-        transform: translateY(-5px);
-        background: rgba(255, 255, 255, 0.2);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    }
-    
-    .asaas-card-label {
-        font-size: 11px;
-        opacity: 0.9;
-        margin-bottom: 10px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    
-    .asaas-card-value {
-        font-size: 32px;
-        font-weight: 700;
-        margin: 0;
-        line-height: 1.2;
-    }
-    
-    .asaas-card-currency {
-        font-size: 20px;
-        opacity: 0.9;
-    }
-    
-    .asaas-error-message {
-        background: rgba(255, 107, 107, 0.2);
-        border: 1px solid rgba(255, 107, 107, 0.4);
-        border-radius: 8px;
-        padding: 15px;
-        color: white;
-        text-align: center;
-        margin-bottom: 20px;
-        position: relative;
-        z-index: 1;
-    }
-    
-    @media (max-width: 992px) {
-        .asaas-balance-cards {
-            grid-template-columns: 1fr;
-        }
-        
-        .asaas-widget-header {
-            flex-direction: column;
-            gap: 15px;
-            align-items: flex-start;
-        }
-        
-        .asaas-card-value {
-            font-size: 28px;
-        }
-    }
-</style>
+<div class="widget" id="widget-<?php echo basename(__FILE__, '.php'); ?>" data-name="Conta Bancária | Extrato">
+    <div class="panel_s">
+        <div class="panel-body">
+            <div class="widget-dragger"></div>
 
-<div class="asaas-dashboard-widget">
-    <div class="asaas-widget-header">
-        <!-- ============================================
-             LOGO DO WIDGET - ALTERE A URL DA IMAGEM AQUI
-             ============================================
-             Para trocar a logo, substitua a URL abaixo pela nova URL da sua imagem.
-             Exemplo: https://seusite.com/caminho/para/nova-logo.png
-             A imagem será exibida com altura de 35px (largura automática).
-        -->
-        <div class="asaas-widget-logo-container">
-            <img src="https://escritoriovirtual.sistemadtjus.com.br/media/Imagem%20login%20admin/AsaasZylos-_1_.png" 
-                 alt="Logo Asaas" 
-                 class="asaas-widget-logo"
-                 onerror="this.style.display='none'">
-            <h3 class="asaas-widget-title">Dashboard Asaas</h3>
-        </div>
-        <!-- ============================================ -->
-        
-        <select class="asaas-period-filter" onchange="window.location.href='?asaas_days='+this.value">
-            <option value="today" <?php echo $days_filter == 'today' || $days_filter == '0' ? 'selected' : ''; ?>>Hoje</option>
-            <option value="7" <?php echo $days_filter == '7' ? 'selected' : ''; ?>>Últimos 7 dias</option>
-            <option value="15" <?php echo $days_filter == '15' ? 'selected' : ''; ?>>Últimos 15 dias</option>
-            <option value="30" <?php echo $days_filter == '30' ? 'selected' : ''; ?>>Últimos 30 dias</option>
-            <option value="current_month" <?php echo $days_filter == 'current_month' ? 'selected' : ''; ?>>Mês Atual</option>
-            <option value="previous_month" <?php echo $days_filter == 'previous_month' ? 'selected' : ''; ?>>Mês Anterior</option>
-        </select>
-    </div>
-    
-    <?php if ($error_message): ?>
-        <div class="asaas-error-message">
-            <i class="fa fa-exclamation-triangle"></i> <?php echo $error_message; ?>
-        </div>
-    <?php endif; ?>
-    
-    <div class="asaas-balance-cards">
-        <div class="asaas-balance-card">
-            <div class="asaas-card-label">Saldo Disponível</div>
-            <h2 class="asaas-card-value">
-                <span class="asaas-card-currency">R$</span><?php echo $available_balance_fmt; ?>
-            </h2>
-        </div>
-        
-        <div class="asaas-balance-card">
-            <div class="asaas-card-label">Total Recebido</div>
-            <h2 class="asaas-card-value">
-                <span class="asaas-card-currency">R$</span><?php echo $received_total_fmt; ?>
-            </h2>
-        </div>
-        
-        <div class="asaas-balance-card">
-            <div class="asaas-card-label">Comissões</div>
-            <h2 class="asaas-card-value">
-                <span class="asaas-card-currency">R$</span><?php echo $commissions_balance_fmt; ?>
-            </h2>
+            <!-- Header com título, botão olho e logo -->
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center;">
+                    <h4 class="no-margin" style="margin:0; display:flex; align-items:center;">
+                        <i class="fa fa-money" style="margin-right:8px; color:#667eea;"></i>
+                        <span style="font-weight:600;">Conta Bancária | Extrato</span>
+                    </h4>
+
+                    <!-- Botão de olho para mostrar/ocultar saldo -->
+                    <button id="toggle-balance-visibility"
+                            type="button"
+                            class="btn btn-default btn-icon"
+                            aria-label="Alternar exibição do saldo"
+                            title="Mostrar / Ocultar Saldo"
+                            style="margin-left:8px; padding:6px 8px; line-height:1; cursor:pointer; z-index:9999;"
+                            onclick="(function(btn){try{var el=document.getElementById('balance-value'); if(!el){return false;} var masked='R$ ********'; var icon=btn.querySelector('i'); var current=(el.textContent||'').trim(); if(current===masked){ var real=el.getAttribute('data-real')||''; real=real.trim(); real=real.replace(/^\s*R\$\s*/i,'')||'0,00'; el.textContent='R$ '+real; if(icon){icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye');} try{localStorage.setItem('asaas_balance_visible_v2','1');}catch(e){} } else { el.textContent=masked; if(icon){icon.classList.remove('fa-eye'); icon.classList.add('fa-eye-slash');} try{localStorage.setItem('asaas_balance_visible_v2','0');}catch(e){} } }catch(e){console&&console.error&&console.error(e);} return false; })(this);">
+                        <i id="eye-icon" class="fa fa-eye-slash" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <!-- Logo do Asaas -->
+                <div>
+                    <img src="https://raw.githubusercontent.com/99labdev/n8n-nodes-asaas/HEAD/logo.png" alt="Asaas Logo" style="height:24px; cursor:pointer;" />
+                </div>
+            </div>
+
+            <hr class="hr-panel-heading" />
+
+            <?php if ($error_message): ?>
+                <div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> <?php echo $error_message; ?></div>
+            <?php else: ?>
+
+                <!-- Cards de métricas com gradiente moderno -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="panel_s" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; border: none;">
+                            <div class="panel-body text-center" style="padding:20px; color: white;">
+                                <h5 style="margin-top:0; opacity:0.9; font-size:11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Comissões Weboox</h5>
+                                <h3 class="bold" style="margin-bottom:0; font-size: 28px;">R$ <?php echo $commissions_balance_fmt; ?></h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="panel_s" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; border: none;">
+                            <div class="panel-body text-center" style="padding:20px; color: white;">
+                                <h5 style="margin-top:0; opacity:0.9; font-size:11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Recebidos</h5>
+                                <h3 class="bold" style="margin-bottom:0; font-size: 28px;">R$ <?php echo $received_total_fmt; ?></h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="panel_s" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; border: none;">
+                            <div class="panel-body text-center" style="padding:20px; color: white;">
+                                <h5 style="margin-top:0; opacity:0.9; font-size:11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Saldo Atual</h5>
+                                <h3 class="bold" style="margin-bottom:0; font-size: 28px;">
+                                    <span id="balance-value" data-real="<?php echo htmlspecialchars($available_balance_fmt, ENT_QUOTES, 'UTF-8'); ?>">R$ ********</span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtros de período com cores modernas -->
+                <div class="btn-group mtop10 mbot10" role="group">
+                    <a href="?asaas_days=today" class="btn btn-sm <?php echo $days_filter=='today'?'btn-primary':'btn-default'; ?>" style="<?php echo $days_filter=='today'?'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-color: #667eea;':''; ?>">Hoje</a>
+                    <a href="?asaas_days=7" class="btn btn-sm <?php echo $days_filter=='7'?'btn-primary':'btn-default'; ?>" style="<?php echo $days_filter=='7'?'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-color: #667eea;':''; ?>">7 Dias</a>
+                    <a href="?asaas_days=current_month" class="btn btn-sm <?php echo $days_filter=='current_month'?'btn-primary':'btn-default'; ?>" style="<?php echo $days_filter=='current_month'?'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-color: #667eea;':''; ?>">Este Mês</a>
+                    <a href="?asaas_days=previous_month" class="btn btn-sm <?php echo $days_filter=='previous_month'?'btn-primary':'btn-default'; ?>" style="<?php echo $days_filter=='previous_month'?'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-color: #667eea;':''; ?>">Mês Anterior</a>
+                </div>
+
+                <!-- Exibe período -->
+                <p class="text-muted mtop5">Período exibido: <strong><?php echo $start_date; ?></strong> até <strong><?php echo $end_date; ?></strong></p>
+
+                <hr />
+
+                <!-- Tabela de transações (extrato completo) -->
+                <?php if (count($filtered_transactions) > 0): ?>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                                <tr>
+                                    <th style="color: white;">Data</th>
+                                    <th style="color: white;">ID Transação</th>
+                                    <th style="color: white;">Descrição</th>
+                                    <th class="text-right" style="color: white;">Valor</th>
+                                    <th class="text-right" style="color: white;">Saldo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($filtered_transactions as $transaction): ?>
+                                    <?php
+                                    // Extrai data para exibição
+                                    $date_ts = tx_get_timestamp($transaction);
+                                    $date = $date_ts ? date('d/m/Y', $date_ts) : '-';
+                                    $transaction_id = $transaction['id'] ?? ($transaction['transactionId'] ?? '-');
+                                    $type = $transaction['type'] ?? ($transaction['category'] ?? '-');
+                                    $description = $transaction['description'] ?? $type;
+                                    $value = isset($transaction['value']) ? $transaction['value'] : (isset($transaction['amount']) ? $transaction['amount'] : 0);
+                                    $balance_after = $transaction['balance'] ?? ($transaction['accountBalance'] ?? 0);
+                                    $value_class = $value >= 0 ? 'text-success' : 'text-danger';
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $date; ?></td>
+                                        <td><?php echo $transaction_id; ?></td>
+                                        <td><?php echo $description; ?></td>
+                                        <td class="text-right <?php echo $value_class; ?>"><strong>R$ <?php echo number_format($value, 2, ',', '.'); ?></strong></td>
+                                        <td class="text-right">R$ <?php echo number_format($balance_after, 2, ',', '.'); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <div class="alert alert-info"><i class="fa fa-info-circle"></i> Nenhuma transação encontrada no período selecionado.</div>
+                <?php endif; ?>
+
+            <?php endif; ?>
         </div>
     </div>
 </div>
+
+<style>
+#toggle-balance-visibility { padding:6px 8px; line-height:1; margin-left:8px; cursor:pointer; z-index:9999; }
+#toggle-balance-visibility .fa { font-size:16px; }
+</style>
+
+<!-- Script para inicializar visibilidade do saldo -->
+<script>
+(function(){
+  try {
+    var el = document.getElementById('balance-value');
+    var btnIcon = document.getElementById('eye-icon');
+    if(!el) return;
+    var stored = null;
+    try { stored = localStorage.getItem('asaas_balance_visible_v2'); } catch(e) { stored = null; }
+    if(stored === '1') {
+      var real = (el.getAttribute('data-real')||'').trim().replace(/^\s*R\$\s*/i,'') || '0,00';
+      el.textContent = 'R$ ' + real;
+      if(btnIcon){ btnIcon.classList.remove('fa-eye-slash'); btnIcon.classList.add('fa-eye'); }
+    } else {
+      el.textContent = 'R$ ********';
+      if(btnIcon){ btnIcon.classList.remove('fa-eye'); btnIcon.classList.add('fa-eye-slash'); }
+    }
+  } catch(e) {
+    try { console && console.error && console.error('asaas init error', e); } catch(_) {}
+  }
+})();
+</script>

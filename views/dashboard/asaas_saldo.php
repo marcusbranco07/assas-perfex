@@ -1,8 +1,9 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 
 <?php
-// Widget / painel de saldo Asaas - versão moderna com layout aprimorado
-// Alteração: design moderno com cards e visualização melhorada
+// Widget / painel de saldo Asaas - versão com correção do filtro "Mês Anterior"
+// Alteração: após buscar transações, filtramos localmente para garantir que só
+// apareçam transações entre $start_date 00:00:00 e $end_date 23:59:59 (inclusive).
 
 $CI = &get_instance();
 $CI->load->library('asaas_gateway');
@@ -191,20 +192,20 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
         z-index: 1;
     }
     
-    .asaas-widget-logo {
+    .asaas-widget-logo-container {
         display: flex;
         align-items: center;
         gap: 12px;
     }
     
-    .asaas-logo-image {
-        height: 40px;
+    .asaas-widget-logo {
+        height: 35px;
         width: auto;
-        filter: brightness(0) invert(1);
+        object-fit: contain;
     }
     
     .asaas-widget-title {
-        font-size: 20px;
+        font-size: 22px;
         font-weight: 700;
         margin: 0;
         letter-spacing: 0.5px;
@@ -219,15 +220,21 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
         font-size: 14px;
         cursor: pointer;
         transition: all 0.3s ease;
+        outline: none;
     }
     
     .asaas-period-filter:hover {
         background: rgba(255, 255, 255, 0.3);
     }
     
+    .asaas-period-filter option {
+        background: #764ba2;
+        color: white;
+    }
+    
     .asaas-balance-cards {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 20px;
         position: relative;
         z-index: 1;
@@ -238,8 +245,9 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 12px;
-        padding: 20px;
+        padding: 25px 20px;
         transition: all 0.3s ease;
+        text-align: center;
     }
     
     .asaas-balance-card:hover {
@@ -249,33 +257,24 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
     }
     
     .asaas-card-label {
-        font-size: 13px;
+        font-size: 11px;
         opacity: 0.9;
-        margin-bottom: 8px;
-        font-weight: 500;
+        margin-bottom: 10px;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
     }
     
     .asaas-card-value {
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 700;
         margin: 0;
         line-height: 1.2;
     }
     
     .asaas-card-currency {
-        font-size: 18px;
+        font-size: 20px;
         opacity: 0.9;
-        margin-right: 4px;
-    }
-    
-    .asaas-card-icon {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        font-size: 32px;
-        opacity: 0.3;
     }
     
     .asaas-error-message {
@@ -286,9 +285,11 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
         color: white;
         text-align: center;
         margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
     }
     
-    @media (max-width: 768px) {
+    @media (max-width: 992px) {
         .asaas-balance-cards {
             grid-template-columns: 1fr;
         }
@@ -300,23 +301,31 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
         }
         
         .asaas-card-value {
-            font-size: 24px;
+            font-size: 28px;
         }
     }
 </style>
 
 <div class="asaas-dashboard-widget">
     <div class="asaas-widget-header">
-        <div class="asaas-widget-logo">
+        <!-- ============================================
+             LOGO DO WIDGET - ALTERE A URL DA IMAGEM AQUI
+             ============================================
+             Para trocar a logo, substitua a URL abaixo pela nova URL da sua imagem.
+             Exemplo: https://seusite.com/caminho/para/nova-logo.png
+             A imagem será exibida com altura de 35px (largura automática).
+        -->
+        <div class="asaas-widget-logo-container">
             <img src="https://escritoriovirtual.sistemadtjus.com.br/media/Imagem%20login%20admin/AsaasZylos-_1_.png" 
-                 alt="Asaas" 
-                 class="asaas-logo-image"
+                 alt="Logo Asaas" 
+                 class="asaas-widget-logo"
                  onerror="this.style.display='none'">
             <h3 class="asaas-widget-title">Dashboard Asaas</h3>
         </div>
+        <!-- ============================================ -->
         
         <select class="asaas-period-filter" onchange="window.location.href='?asaas_days='+this.value">
-            <option value="today" <?php echo $days_filter == 'today' ? 'selected' : ''; ?>>Hoje</option>
+            <option value="today" <?php echo $days_filter == 'today' || $days_filter == '0' ? 'selected' : ''; ?>>Hoje</option>
             <option value="7" <?php echo $days_filter == '7' ? 'selected' : ''; ?>>Últimos 7 dias</option>
             <option value="15" <?php echo $days_filter == '15' ? 'selected' : ''; ?>>Últimos 15 dias</option>
             <option value="30" <?php echo $days_filter == '30' ? 'selected' : ''; ?>>Últimos 30 dias</option>
@@ -333,7 +342,6 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
     
     <div class="asaas-balance-cards">
         <div class="asaas-balance-card">
-            <i class="fa fa-wallet asaas-card-icon"></i>
             <div class="asaas-card-label">Saldo Disponível</div>
             <h2 class="asaas-card-value">
                 <span class="asaas-card-currency">R$</span><?php echo $available_balance_fmt; ?>
@@ -341,7 +349,6 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
         </div>
         
         <div class="asaas-balance-card">
-            <i class="fa fa-arrow-down asaas-card-icon"></i>
             <div class="asaas-card-label">Total Recebido</div>
             <h2 class="asaas-card-value">
                 <span class="asaas-card-currency">R$</span><?php echo $received_total_fmt; ?>
@@ -349,7 +356,6 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
         </div>
         
         <div class="asaas-balance-card">
-            <i class="fa fa-percent asaas-card-icon"></i>
             <div class="asaas-card-label">Comissões</div>
             <h2 class="asaas-card-value">
                 <span class="asaas-card-currency">R$</span><?php echo $commissions_balance_fmt; ?>

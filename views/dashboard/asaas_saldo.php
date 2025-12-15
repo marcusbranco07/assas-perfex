@@ -160,6 +160,7 @@ $received_total_fmt = number_format($received_total, 2, ',', '.');
 $available_balance_fmt = number_format($available_balance, 2, ',', '.');
 ?>
 
+<div class="widget" id="widget-<?php echo basename(__FILE__, '.php'); ?>" data-name="Dashboard Asaas">
 <style>
     .asaas-dashboard-widget {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

@@ -41,7 +41,7 @@ if ($balance) {
             <h4 class="no-margin">
                 <i class="fa fa-money"></i> Saldo Asaas
                 <span class="pull-right">
-                    <a href="javascript:void(0);" id="toggle-balance-visibility" style="font-size: 18px;" title="Mostrar/Ocultar Saldo">
+                    <a href="#" id="toggle-balance-visibility" onclick="if(window.asaasToggleBalance){window.asaasToggleBalance(); return false;}" style="font-size: 18px; cursor: pointer;" title="Mostrar/Ocultar Saldo">
                         <i class="fa fa-eye-slash"></i>
                     </a>
                 </span>
@@ -175,52 +175,82 @@ if ($balance) {
 </style>
 
 <script>
-// Script de toggle de visibilidade do saldo
-document.addEventListener('DOMContentLoaded', function() {
-    var toggleBtn = document.getElementById('toggle-balance-visibility');
-    var balanceValue = document.getElementById('balance-value');
-    
-    if (!toggleBtn || !balanceValue) {
-        console.log('Elementos não encontrados');
-        return;
-    }
-    
-    var realValue = balanceValue.getAttribute('data-real-value');
-    if (!realValue) {
-        console.log('Valor real não encontrado');
-        return;
-    }
-    
-    // Estado inicial: oculto (padrão)
-    var isHidden = localStorage.getItem('asaas_balance_hidden') !== 'false';
-    
-    // Função para atualizar a exibição
-    function updateDisplay(hidden) {
-        var icon = toggleBtn.querySelector('i');
+// Script de toggle de visibilidade do saldo - versão simplificada e robusta
+(function() {
+    function initBalanceToggle() {
+        var toggleBtn = document.getElementById('toggle-balance-visibility');
+        var balanceValue = document.getElementById('balance-value');
         
-        if (hidden) {
-            balanceValue.textContent = '**********';
-            if (icon) {
-                icon.className = 'fa fa-eye-slash';
+        if (!toggleBtn || !balanceValue) {
+            console.log('[Asaas Widget] Elementos não encontrados, tentando novamente...');
+            setTimeout(initBalanceToggle, 100);
+            return;
+        }
+        
+        console.log('[Asaas Widget] Elementos encontrados!');
+        
+        var realValue = balanceValue.getAttribute('data-real-value');
+        if (!realValue) {
+            console.log('[Asaas Widget] Valor real não encontrado');
+            return;
+        }
+        
+        console.log('[Asaas Widget] Valor real:', realValue);
+        
+        // Estado inicial: oculto (padrão)
+        var isHidden = localStorage.getItem('asaas_balance_hidden') !== 'false';
+        console.log('[Asaas Widget] Estado inicial oculto:', isHidden);
+        
+        // Função para atualizar a exibição
+        window.asaasToggleBalance = function() {
+            var icon = toggleBtn.querySelector('i');
+            
+            if (isHidden) {
+                balanceValue.textContent = 'R$ ' + realValue;
+                if (icon) {
+                    icon.className = 'fa fa-eye';
+                }
+                isHidden = false;
+            } else {
+                balanceValue.textContent = '**********';
+                if (icon) {
+                    icon.className = 'fa fa-eye-slash';
+                }
+                isHidden = true;
             }
-        } else {
+            
+            localStorage.setItem('asaas_balance_hidden', isHidden ? 'true' : 'false');
+            console.log('[Asaas Widget] Toggle acionado. Oculto:', isHidden);
+        };
+        
+        // Aplica estado inicial
+        if (!isHidden) {
             balanceValue.textContent = 'R$ ' + realValue;
+            var icon = toggleBtn.querySelector('i');
             if (icon) {
                 icon.className = 'fa fa-eye';
             }
         }
+        
+        // Remove listeners anteriores (se houver) e adiciona novo
+        var newToggleBtn = toggleBtn.cloneNode(true);
+        toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
+        
+        newToggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.asaasToggleBalance();
+        });
+        
+        console.log('[Asaas Widget] Inicialização completa!');
     }
     
-    // Aplica estado inicial
-    updateDisplay(isHidden);
+    // Tenta inicializar imediatamente
+    initBalanceToggle();
     
-    // Adiciona evento de clique
-    toggleBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        isHidden = !isHidden;
-        updateDisplay(isHidden);
-        localStorage.setItem('asaas_balance_hidden', isHidden ? 'true' : 'false');
-        console.log('Toggle acionado. Oculto:', isHidden);
-    });
-});
+    // Também tenta quando o DOM estiver pronto (fallback)
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initBalanceToggle);
+    }
+})();
 </script>

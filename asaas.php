@@ -16,12 +16,14 @@ Author URI: http://cmd.mns.marketing
 
 define('ASAAS_MODULE_NAME', 'asaas');
 
+hooks()->add_action('admin_init', 'asaas_permissions');
 hooks()->add_action('before_render_payment_gateway_settings', 'asaas_before_render_payment_gateway_settings');
 hooks()->add_action('app_admin_footer', 'asaas_settings_tab_footer');
 hooks()->add_action('after_invoice_added', 'asaas_after_invoice_added');
 hooks()->add_action('invoice_updated', 'asaas_after_invoice_updated');
 hooks()->add_action('before_invoice_deleted', 'asaas_before_invoice_deleted');
 hooks()->add_filter('module_asaas_action_links', 'module_asaas_action_links');
+hooks()->add_filter('get_dashboard_widgets', 'asaas_add_dashboard_widget');
 
 $CI = &get_instance();
 
@@ -41,6 +43,17 @@ function module_asaas_action_links($actions)
 }
 
 register_payment_gateway('asaas_gateway', ASAAS_MODULE_NAME);
+
+/**
+ * Registra as permissões do módulo Asaas
+ */
+function asaas_permissions() {
+    $capabilities = [];
+    $capabilities['capabilities'] = [
+        'view' => _l('permission_view'),
+    ];
+    register_staff_capabilities('asaas_dashboard', $capabilities, _l('Asaas Dashboard Widget'));
+}
 
 function asaas_before_render_payment_gateway_settings($gateway)
 {
@@ -343,4 +356,20 @@ function asaas_before_invoice_deleted($id)
         }
     }
     return $id;
+}
+
+/**
+ * Adiciona o widget do Asaas ao dashboard
+ * @param  array $widgets
+ * @return array
+ */
+function asaas_add_dashboard_widget($widgets) {
+    // Verifica se o usuário tem permissão para visualizar o widget
+    if (has_permission('asaas_dashboard', '', 'view')) {
+        $widgets[] = [
+            'path' => 'asaas/dashboard/asaas_saldo',
+            'container' => 'left-8',
+        ];
+    }
+    return $widgets;
 }

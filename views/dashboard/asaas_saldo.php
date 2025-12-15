@@ -151,8 +151,8 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
 ?>
 
 <div class="widget" id="widget-<?php echo basename(__FILE__, '.php'); ?>" data-name="Conta Bancária | Extrato">
-    <div class="panel_s">
-        <div class="panel-body">
+    <div class="panel_s" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.1);">
+        <div class="panel-body" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
             <div class="widget-dragger"></div>
 
             <!-- Header com título, botão olho e logo -->
@@ -187,32 +187,32 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
                 <div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> <?php echo $error_message; ?></div>
             <?php else: ?>
 
-                <!-- Cards de métricas com gradiente moderno melhorado -->
+                <!-- Cards de métricas com gradiente moderno e animações -->
                 <div class="row">
                     <div class="col-md-4">
-                        <div class="panel_s" style="background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%); border-radius: 12px; border: none; box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);">
-                            <div class="panel-body text-center" style="padding:20px;">
-                                <h5 style="margin-top:0; font-size:11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Comissões Weboox</h5>
-                                <h3 class="bold" style="margin-bottom:0; font-size: 32px; color: #ffffff !important; text-shadow: 0 2px 8px rgba(0,0,0,0.3); font-weight: 700;">R$ <?php echo $commissions_balance_fmt; ?></h3>
+                        <div class="asaas-metric-card panel_s" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; border: none; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;">
+                            <div class="panel-body text-center" style="padding:25px; position: relative; z-index: 1;">
+                                <h5 style="margin-top:0; font-size:12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.3); opacity: 0.95;">Comissões Weboox</h5>
+                                <h3 class="bold" style="margin-bottom:0; font-size: 36px; color: #ffffff !important; text-shadow: 0 3px 10px rgba(0,0,0,0.4); font-weight: 800; margin-top: 10px;">R$ <?php echo $commissions_balance_fmt; ?></h3>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-4">
-                        <div class="panel_s" style="background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%); border-radius: 12px; border: none; box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);">
-                            <div class="panel-body text-center" style="padding:20px;">
-                                <h5 style="margin-top:0; font-size:11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Recebidos</h5>
-                                <h3 class="bold" style="margin-bottom:0; font-size: 32px; color: #ffffff !important; text-shadow: 0 2px 8px rgba(0,0,0,0.3); font-weight: 700;">R$ <?php echo $received_total_fmt; ?></h3>
+                        <div class="asaas-metric-card panel_s" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; border: none; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;">
+                            <div class="panel-body text-center" style="padding:25px; position: relative; z-index: 1;">
+                                <h5 style="margin-top:0; font-size:12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.3); opacity: 0.95;">Recebidos</h5>
+                                <h3 class="bold" style="margin-bottom:0; font-size: 36px; color: #ffffff !important; text-shadow: 0 3px 10px rgba(0,0,0,0.4); font-weight: 800; margin-top: 10px;">R$ <?php echo $received_total_fmt; ?></h3>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-4">
-                        <div class="panel_s" style="background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%); border-radius: 12px; border: none; box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);">
-                            <div class="panel-body text-center" style="padding:20px;">
-                                <h5 style="margin-top:0; font-size:11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Saldo Atual</h5>
-                                <h3 class="bold" style="margin-bottom:0; font-size: 32px; font-weight: 700;">
-                                    <span id="balance-value" data-real="<?php echo htmlspecialchars($available_balance_fmt, ENT_QUOTES, 'UTF-8'); ?>" style="color: #ffffff !important; text-shadow: 0 2px 8px rgba(0,0,0,0.3);">R$ ********</span>
+                        <div class="asaas-metric-card panel_s" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; border: none; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;">
+                            <div class="panel-body text-center" style="padding:25px; position: relative; z-index: 1;">
+                                <h5 style="margin-top:0; font-size:12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.3); opacity: 0.95;">Saldo Atual</h5>
+                                <h3 class="bold" style="margin-bottom:0; font-size: 36px; font-weight: 800; margin-top: 10px;">
+                                    <span id="balance-value" data-real="<?php echo htmlspecialchars($available_balance_fmt, ENT_QUOTES, 'UTF-8'); ?>" style="color: #ffffff !important; text-shadow: 0 3px 10px rgba(0,0,0,0.4);">R$ ********</span>
                                 </h3>
                             </div>
                         </div>
@@ -279,8 +279,109 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
 </div>
 
 <style>
-#toggle-balance-visibility { padding:6px 8px; line-height:1; margin-left:8px; cursor:pointer; z-index:9999; }
-#toggle-balance-visibility .fa { font-size:16px; }
+#toggle-balance-visibility { 
+    padding:6px 8px; 
+    line-height:1; 
+    margin-left:8px; 
+    cursor:pointer; 
+    z-index:9999; 
+    transition: all 0.3s ease;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 8px;
+}
+#toggle-balance-visibility:hover {
+    background: rgba(255,255,255,0.4);
+    transform: scale(1.05);
+}
+#toggle-balance-visibility .fa { 
+    font-size:16px; 
+}
+
+/* Animações modernas para os cards de métricas */
+.asaas-metric-card {
+    cursor: pointer;
+}
+
+.asaas-metric-card:hover {
+    transform: translateY(-8px) scale(1.02) !important;
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5) !important;
+}
+
+.asaas-metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.asaas-metric-card:hover::before {
+    opacity: 1;
+}
+
+/* Animação de brilho em movimento */
+.asaas-metric-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+    transform: rotate(45deg);
+    animation: shimmer 3s infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+}
+
+/* Efeitos nos botões de filtro */
+.btn-group .btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 8px !important;
+    margin-right: 5px;
+    font-weight: 600;
+}
+
+.btn-group .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Estilo da tabela moderna */
+.table-responsive {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.table thead {
+    border-radius: 12px 12px 0 0;
+}
+
+.table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.05) !important;
+    transform: scale(1.01);
+}
 </style>
 
 <!-- Script para inicializar visibilidade do saldo -->

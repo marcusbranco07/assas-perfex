@@ -40,69 +40,120 @@
                             <div class="clearfix"></div>
                         </div>
 
-                        <p>&nbsp;</p>
-                        <h2 class="bold invoice-html-number" style="text-align: center">Selecione umas das opções abaixo para realizar o pagamento</h2>
-                        <p>&nbsp;</p>
+                        <style>
+                            .payment-widget-container {
+                                max-width: 900px;
+                                margin: 40px auto;
+                                padding: 20px;
+                            }
+                            
+                            .payment-widget-title {
+                                text-align: center;
+                                color: #333;
+                                font-size: 24px;
+                                font-weight: 600;
+                                margin-bottom: 40px;
+                            }
+                            
+                            .payment-options-grid {
+                                display: flex;
+                                justify-content: center;
+                                gap: 20px;
+                                flex-wrap: wrap;
+                            }
+                            
+                            .payment-option-card {
+                                flex: 1;
+                                min-width: 250px;
+                                max-width: 280px;
+                                background: #ffffff;
+                                border: 2px solid #e0e0e0;
+                                border-radius: 12px;
+                                padding: 40px 20px;
+                                text-align: center;
+                                transition: all 0.3s ease;
+                                text-decoration: none;
+                                display: block;
+                                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                            }
+                            
+                            .payment-option-card:hover {
+                                transform: translateY(-8px);
+                                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+                                border-color: #4CAF50;
+                                text-decoration: none;
+                            }
+                            
+                            .payment-option-icon {
+                                font-size: 80px;
+                                color: #4CAF50;
+                                margin-bottom: 20px;
+                                transition: all 0.3s ease;
+                            }
+                            
+                            .payment-option-card:hover .payment-option-icon {
+                                color: #45a049;
+                                transform: scale(1.1);
+                            }
+                            
+                            .payment-option-title {
+                                font-size: 20px;
+                                font-weight: 600;
+                                color: #333;
+                                margin: 0;
+                            }
+                            
+                            .payment-option-description {
+                                font-size: 14px;
+                                color: #666;
+                                margin-top: 8px;
+                            }
+                            
+                            @media (max-width: 768px) {
+                                .payment-options-grid {
+                                    flex-direction: column;
+                                    align-items: center;
+                                }
+                                
+                                .payment-option-card {
+                                    width: 100%;
+                                    max-width: 100%;
+                                }
+                                
+                                .payment-widget-title {
+                                    font-size: 20px;
+                                }
+                            }
+                        </style>
 
-                        <div class="row">
-                            <?php if ($billet_only == 1) { ?>
-                                <?php if ($pix_only == 1 && $card_only == 1) { ?>
-                                    <div class="col-md-4">
-                                    <?php } ?>
-                                    <?php if ($pix_only == 0 && $card_only == 1) { ?>
-                                        <div class="col-md-6">
-                                        <?php } ?>
-                                        <?php if ($pix_only == 0 && $card_only == 0) { ?>
-                                            <div class="col-md-6 col-md-offset-3">
-                                            <?php } ?>
-                                            <a href="<?php echo admin_url('asaas/checkout/boleto/' . $hash) ?>">
-                                                <div class="thumbnail  text-center" style="min-height:100px; color:#000000"><i class="fa fa-barcode fa-5x" style="font-size:200px"></i>
-                                                    <p class="lead">Boleto</p>
-                                                </div>
-                                            </a>
-                                            </div>
-                                        <?php } ?>
-                                        <?php if ($card_only == 1) { ?>
-                                            <?php if ($billet_only == 1 && $pix_only == 1) { ?>
-                                                <div class="col-md-4">
-                                                <?php } ?>
-                                                <?php if ($billet_only == 0 && $pix_only == 1) { ?>
-                                                    <div class="col-md-6">
-                                                    <?php } ?>
-                                                    <?php if ($billet_only == 0 && $pix_only == 0) { ?>
-                                                        <div class="col-md-6 col-md-offset-3">
-                                                        <?php } ?>
-                                                        <a href="<?php echo admin_url('asaas/checkout/cartao/' . $hash) ?>">
-                                                            <div class="thumbnail  text-center" style="min-height:100px; color:#000000"><i class="fa fa-credit-card fa-5x" style="font-size:200px"></i>
-                                                                <p class="lead">Cartão de crédito</p>
-                                                            </div>
-                                                        </a>
-                                                        </div>
-                                                    <?php } ?>
-                                                    <?php if ($pix_only == 1) { ?>
-                                                        <?php if ($billet_only == 1 && $card_only == 1) { ?>
-                                                            <div class="col-md-4">
-                                                            <?php } ?>
-                                                            <?php if ($billet_only == 0 && $card_only == 1) { ?>
-                                                                <div class="col-md-6">
-                                                                <?php } ?>
-                                                                <?php if ($billet_only == 0 && $card_only == 0) { ?>
-                                                                    <div class="col-md-6 col-md-offset-3">
-                                                                    <?php } ?>
-                                                                    <a href="<?php echo admin_url('asaas/checkout/qrcode/' . $hash) ?>">
-                                                                        <div class="thumbnail  text-center" style="min-height:100px; color:#000000">
-                                                                            <i class="fa fa-qrcode fa-5x" style="font-size:200px"></i>
-                                                                            <p class="lead">PIX</p>
-                                                                        </div>
-                                                                    </a>
-                                                                    </div>
-                                                                <?php } ?>
-                                                                </div>
-                                                            </div>
-                                                    </div>
-                                                </div>
-                                        </div>
-                                    </div>
+                        <div class="payment-widget-container">
+                            <h2 class="payment-widget-title">Selecione uma das opções abaixo para realizar o pagamento</h2>
+                            
+                            <div class="payment-options-grid">
+                                <?php if ($billet_only == 1) { ?>
+                                    <a href="<?php echo admin_url('asaas/checkout/boleto/' . $hash) ?>" class="payment-option-card">
+                                        <i class="fa fa-barcode payment-option-icon"></i>
+                                        <p class="payment-option-title">Boleto Bancário</p>
+                                        <p class="payment-option-description">Pagamento à vista com vencimento</p>
+                                    </a>
+                                <?php } ?>
+                                
+                                <?php if ($card_only == 1) { ?>
+                                    <a href="<?php echo admin_url('asaas/checkout/cartao/' . $hash) ?>" class="payment-option-card">
+                                        <i class="fa fa-credit-card payment-option-icon"></i>
+                                        <p class="payment-option-title">Cartão de Crédito</p>
+                                        <p class="payment-option-description">Parcelamento disponível</p>
+                                    </a>
+                                <?php } ?>
+                                
+                                <?php if ($pix_only == 1) { ?>
+                                    <a href="<?php echo admin_url('asaas/checkout/qrcode/' . $hash) ?>" class="payment-option-card">
+                                        <i class="fa fa-qrcode payment-option-icon"></i>
+                                        <p class="payment-option-title">PIX</p>
+                                        <p class="payment-option-description">Aprovação instantânea</p>
+                                    </a>
+                                <?php } ?>
+                            </div>
                         </div>
                     </div>
                 </div>

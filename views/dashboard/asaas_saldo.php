@@ -191,28 +191,28 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
                 <div class="row">
                     <div class="col-md-4">
                         <div class="panel_s" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; border: none;">
-                            <div class="panel-body text-center" style="padding:20px; color: white;">
-                                <h5 style="margin-top:0; opacity:0.9; font-size:11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Comissões Weboox</h5>
-                                <h3 class="bold" style="margin-bottom:0; font-size: 28px;">R$ <?php echo $commissions_balance_fmt; ?></h3>
+                            <div class="panel-body text-center" style="padding:20px; color: white !important;">
+                                <h5 style="margin-top:0; opacity:0.9; font-size:11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: white !important;">Comissões Weboox</h5>
+                                <h3 class="bold" style="margin-bottom:0; font-size: 28px; color: white !important;">R$ <?php echo $commissions_balance_fmt; ?></h3>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="panel_s" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; border: none;">
-                            <div class="panel-body text-center" style="padding:20px; color: white;">
-                                <h5 style="margin-top:0; opacity:0.9; font-size:11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Recebidos</h5>
-                                <h3 class="bold" style="margin-bottom:0; font-size: 28px;">R$ <?php echo $received_total_fmt; ?></h3>
+                            <div class="panel-body text-center" style="padding:20px; color: white !important;">
+                                <h5 style="margin-top:0; opacity:0.9; font-size:11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: white !important;">Recebidos</h5>
+                                <h3 class="bold" style="margin-bottom:0; font-size: 28px; color: white !important;">R$ <?php echo $received_total_fmt; ?></h3>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="panel_s" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; border: none;">
-                            <div class="panel-body text-center" style="padding:20px; color: white;">
-                                <h5 style="margin-top:0; opacity:0.9; font-size:11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Saldo Atual</h5>
-                                <h3 class="bold" style="margin-bottom:0; font-size: 28px;">
-                                    <span id="balance-value" data-real="<?php echo htmlspecialchars($available_balance_fmt, ENT_QUOTES, 'UTF-8'); ?>">R$ ********</span>
+                            <div class="panel-body text-center" style="padding:20px; color: white !important;">
+                                <h5 style="margin-top:0; opacity:0.9; font-size:11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: white !important;">Saldo Atual</h5>
+                                <h3 class="bold" style="margin-bottom:0; font-size: 28px; color: white !important;">
+                                    <span id="balance-value" data-real="<?php echo htmlspecialchars($available_balance_fmt, ENT_QUOTES, 'UTF-8'); ?>" style="color: white !important;">R$ ********</span>
                                 </h3>
                             </div>
                         </div>
@@ -236,13 +236,13 @@ $available_balance_fmt = number_format($available_balance, 2, ',', '.');
                 <?php if (count($filtered_transactions) > 0): ?>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
-                            <thead style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                             <thead style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white !important;">
                                 <tr>
-                                    <th style="color: white;">Data</th>
-                                    <th style="color: white;">ID Transação</th>
-                                    <th style="color: white;">Descrição</th>
-                                    <th class="text-right" style="color: white;">Valor</th>
-                                    <th class="text-right" style="color: white;">Saldo</th>
+                                    <th style="color: white !important;">Data</th>
+                                    <th style="color: white !important;">ID Transação</th>
+                                    <th style="color: white !important;">Descrição</th>
+                                    <th class="text-right" style="color: white !important;">Valor</th>
+                                    <th class="text-right" style="color: white !important;">Saldo</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -82,7 +82,7 @@ if ($balance) {
                             <div class="panel-body text-center" style="background-color: #f9f9f9; padding: 15px;">
                                 <h5 class="text-muted" style="margin-top: 0;">Saldo Atual</h5>
                                 <h3 class="text-success bold" style="margin-bottom: 0;">
-                                    <span id="balance-value" data-value="<?php echo number_format($available_balance, 2, ',', '.'); ?>">**********</span>
+                                    <span id="balance-value" data-real-value="<?php echo number_format($available_balance, 2, ',', '.'); ?>">**********</span>
                                 </h3>
                             </div>
                         </div>
@@ -175,56 +175,52 @@ if ($balance) {
 </style>
 
 <script>
-(function() {
-    'use strict';
+// Script de toggle de visibilidade do saldo
+document.addEventListener('DOMContentLoaded', function() {
+    var toggleBtn = document.getElementById('toggle-balance-visibility');
+    var balanceValue = document.getElementById('balance-value');
     
-    // Função principal de inicialização
-    function initBalanceToggle() {
-        var toggleBtn = document.getElementById('toggle-balance-visibility');
-        var balanceValue = document.getElementById('balance-value');
+    if (!toggleBtn || !balanceValue) {
+        console.log('Elementos não encontrados');
+        return;
+    }
+    
+    var realValue = balanceValue.getAttribute('data-real-value');
+    if (!realValue) {
+        console.log('Valor real não encontrado');
+        return;
+    }
+    
+    // Estado inicial: oculto (padrão)
+    var isHidden = localStorage.getItem('asaas_balance_hidden') !== 'false';
+    
+    // Função para atualizar a exibição
+    function updateDisplay(hidden) {
+        var icon = toggleBtn.querySelector('i');
         
-        if (!toggleBtn || !balanceValue) {
-            return;
-        }
-        
-        var realValue = balanceValue.getAttribute('data-value');
-        if (!realValue) {
-            return;
-        }
-        
-        // Verifica se está oculto (padrão: sim)
-        var isHidden = localStorage.getItem('asaas_balance_hidden') !== 'false';
-        
-        // Aplica estado inicial
-        updateBalanceDisplay(isHidden);
-        
-        // Toggle ao clicar
-        toggleBtn.onclick = function(e) {
-            e.preventDefault();
-            isHidden = !isHidden;
-            updateBalanceDisplay(isHidden);
-            localStorage.setItem('asaas_balance_hidden', isHidden.toString());
-        };
-        
-        function updateBalanceDisplay(hide) {
-            var icon = toggleBtn.querySelector('i');
-            
-            if (hide) {
-                balanceValue.innerHTML = '**********';
+        if (hidden) {
+            balanceValue.textContent = '**********';
+            if (icon) {
                 icon.className = 'fa fa-eye-slash';
-            } else {
-                balanceValue.innerHTML = 'R$ ' + realValue;
+            }
+        } else {
+            balanceValue.textContent = 'R$ ' + realValue;
+            if (icon) {
                 icon.className = 'fa fa-eye';
             }
         }
     }
     
-    // Aguarda o DOM estar pronto
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initBalanceToggle);
-    } else {
-        // Se o DOM já estiver pronto, executa com um pequeno delay para garantir
-        setTimeout(initBalanceToggle, 100);
-    }
-})();
+    // Aplica estado inicial
+    updateDisplay(isHidden);
+    
+    // Adiciona evento de clique
+    toggleBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        isHidden = !isHidden;
+        updateDisplay(isHidden);
+        localStorage.setItem('asaas_balance_hidden', isHidden ? 'true' : 'false');
+        console.log('Toggle acionado. Oculto:', isHidden);
+    });
+});
 </script>

@@ -168,21 +168,20 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
         <div class="panel-body" style="">
             <div class="widget-dragger"></div>
 
-            <!-- Header com título, botão olho e logo -->
-            <div style="display:flex; align-items:center; justify-content:space-between;">
-                <div style="display:flex; align-items:center;">
-                    <h4 class="no-margin" style="margin:0; display:flex; align-items:center;">
-                        <i class="fa fa-money" style="margin-right:8px; color:#667eea;"></i>
-                        <span style="font-weight:600;">Conta Bancária | Extrato</span>
+            <!-- Header -->
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 20px;">
+                <div style="display:flex; align-items:center; gap: 10px;">
+                    <h4 style="margin:0; font-size: 18px; font-weight: 600; color: #111827;">
+                        <i class="fa fa-bank" style="margin-right:8px; color:#0891b2;"></i>
+                        Conta Bancária
                     </h4>
 
                     <!-- Botão de olho para mostrar/ocultar saldo -->
                     <button id="toggle-balance-visibility"
                             type="button"
-                            class="btn btn-default btn-icon"
+                            class="btn btn-default btn-icon btn-sm"
                             aria-label="Alternar exibição do saldo"
                             title="Mostrar / Ocultar Saldo"
-                            style="margin-left:8px; padding:6px 8px; line-height:1; cursor:pointer; z-index:9999;"
                             onclick="(function(btn){try{var el=document.getElementById('balance-value'); if(!el){return false;} var masked='R$ ********'; var icon=btn.querySelector('i'); var current=(el.textContent||'').trim(); if(current===masked){ var real=el.getAttribute('data-real')||''; real=real.trim(); real=real.replace(/^\s*R\$\s*/i,'')||'0,00'; el.textContent='R$ '+real; if(icon){icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye');} try{localStorage.setItem('asaas_balance_visible_v2','1');}catch(e){} } else { el.textContent=masked; if(icon){icon.classList.remove('fa-eye'); icon.classList.add('fa-eye-slash');} try{localStorage.setItem('asaas_balance_visible_v2','0');}catch(e){} } }catch(e){console&&console.error&&console.error(e);} return false; })(this);">
                         <i id="eye-icon" class="fa fa-eye-slash" aria-hidden="true"></i>
                     </button>
@@ -190,62 +189,61 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 
                 <!-- Logo do Asaas -->
                 <div>
-                    <img src="https://raw.githubusercontent.com/99labdev/n8n-nodes-asaas/HEAD/logo.png" alt="Asaas Logo" style="height:24px; cursor:pointer;" />
+                    <img src="https://raw.githubusercontent.com/99labdev/n8n-nodes-asaas/HEAD/logo.png" alt="Asaas Logo" style="height:20px; opacity: 0.7;" />
                 </div>
             </div>
-
-            <hr class="hr-panel-heading" />
 
             <?php if ($error_message): ?>
                 <div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> <?php echo $error_message; ?></div>
             <?php else: ?>
 
-                <!-- Cards de métricas com gradiente moderno e animações -->
-                <div class="row">
+                <!-- Cards de métricas com design clean e minimalista -->
+                <div class="row" style="margin-bottom: 20px;">
                     <div class="col-md-4">
-                        <!-- Inline gradient + color garantem legibilidade independentemente do CSS do tema -->
-                        <div class="asaas-metric-card panel_s"
-                             style="background: linear-gradient(135deg, #4f66f0 6%, #6b4bd6 100%); color: #ffffff; border-radius: 16px; border: none; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden;">
-                            <div class="panel-body text-center" style="background: transparent; color: inherit; padding:25px; position: relative; z-index: 1;">
-                                <h5 style="margin-top:0; font-size:12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: rgba(255,255,255,0.95);">Comissões Weboox</h5>
-                                <h3 class="bold" style="margin-bottom:0; font-size: 36px; color: #ffffff; font-weight: 800; margin-top: 10px;">R$ <?php echo $commissions_balance_fmt; ?></h3>
+                        <div class="asaas-metric-card"
+                             style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px 20px; transition: all 0.2s ease; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);">
+                            <div style="text-align: center;">
+                                <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Comissões Weboox</div>
+                                <div style="font-size: 28px; font-weight: 700; color: #111827; line-height: 1.2;">R$ <?php echo $commissions_balance_fmt; ?></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-4">
-                        <div class="asaas-metric-card panel_s"
-                             style="background: linear-gradient(135deg, #4f66f0 6%, #6b4bd6 100%); color: #ffffff; border-radius: 16px; border: none; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden;">
-                            <div class="panel-body text-center" style="background: transparent; color: inherit; padding:25px; position: relative; z-index: 1;">
-                                <h5 style="margin-top:0; font-size:12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: rgba(255,255,255,0.95);">Recebidos</h5>
-                                <h3 class="bold" style="margin-bottom:0; font-size: 36px; color: #ffffff; font-weight: 800; margin-top: 10px;">R$ <?php echo $received_total_fmt; ?></h3>
+                        <div class="asaas-metric-card"
+                             style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px 20px; transition: all 0.2s ease; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);">
+                            <div style="text-align: center;">
+                                <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Recebidos</div>
+                                <div style="font-size: 28px; font-weight: 700; color: #059669; line-height: 1.2;">R$ <?php echo $received_total_fmt; ?></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-4">
-                        <div class="asaas-metric-card panel_s"
-                             style="background: linear-gradient(135deg, #4f66f0 6%, #6b4bd6 100%); color: #ffffff; border-radius: 16px; border: none; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden;">
-                            <div class="panel-body text-center" style="background: transparent; color: inherit; padding:25px; position: relative; z-index: 1;">
-                                <h5 style="margin-top:0; font-size:12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: rgba(255,255,255,0.95);">Saldo Atual</h5>
-                                <h3 class="bold" style="margin-bottom:0; font-size: 36px; font-weight: 800; margin-top: 10px; color: #ffffff;">
-                                    <span id="balance-value" data-real="<?php echo htmlspecialchars($available_balance_fmt, ENT_QUOTES, 'UTF-8'); ?>" style="color: #ffffff;">R$ ********</span>
-                                </h3>
+                        <div class="asaas-metric-card"
+                             style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px 20px; transition: all 0.2s ease; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);">
+                            <div style="text-align: center;">
+                                <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Saldo Atual</div>
+                                <div style="font-size: 28px; font-weight: 700; color: #111827; line-height: 1.2;">
+                                    <span id="balance-value" data-real="<?php echo htmlspecialchars($available_balance_fmt, ENT_QUOTES, 'UTF-8'); ?>">R$ ********</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Filtros de período com cores modernas -->
-                <div class="btn-group mtop10 mbot10" role="group">
-                    <a href="?asaas_days=today" class="btn btn-sm <?php echo $days_filter=='today'?'btn-primary':'btn-default'; ?>">Hoje</a>
-                    <a href="?asaas_days=7" class="btn btn-sm <?php echo $days_filter=='7'?'btn-primary':'btn-default'; ?>">7 Dias</a>
-                    <a href="?asaas_days=current_month" class="btn btn-sm <?php echo $days_filter=='current_month'?'btn-primary':'btn-default'; ?>">Este Mês</a>
-                    <a href="?asaas_days=previous_month" class="btn btn-sm <?php echo $days_filter=='previous_month'?'btn-primary':'btn-default'; ?>">Mês Anterior</a>
+                <!-- Filtros de período -->
+                <div style="margin: 20px 0 15px 0;">
+                    <div class="btn-group" role="group">
+                        <a href="?asaas_days=today" class="btn btn-sm <?php echo $days_filter=='today'?'btn-info':'btn-default'; ?>" style="border-radius: 6px 0 0 6px;">Hoje</a>
+                        <a href="?asaas_days=7" class="btn btn-sm <?php echo $days_filter=='7'?'btn-info':'btn-default'; ?>" style="border-radius: 0;">7 Dias</a>
+                        <a href="?asaas_days=current_month" class="btn btn-sm <?php echo $days_filter=='current_month'?'btn-info':'btn-default'; ?>" style="border-radius: 0;">Este Mês</a>
+                        <a href="?asaas_days=previous_month" class="btn btn-sm <?php echo $days_filter=='previous_month'?'btn-info':'btn-default'; ?>" style="border-radius: 0 6px 6px 0;">Mês Anterior</a>
+                    </div>
                 </div>
 
                 <!-- Exibe período -->
-                <p class="text-muted mtop5">Período exibido: <strong><?php echo $start_date; ?></strong> até <strong><?php echo $end_date; ?></strong></p>
+                <p style="color: #6b7280; font-size: 13px; margin: 10px 0 15px 0;">Período: <strong style="color: #374151;"><?php echo $start_date; ?></strong> até <strong style="color: #374151;"><?php echo $end_date; ?></strong></p>
 
                 <hr />
 
@@ -296,112 +294,153 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 </div>
 
 <style>
-/* ---------- Correção final de contraste e tema moderno (escopo por ID) ---------- */
-:root{
-  --card-grad-from: #4f66f0; /* azul principal */
-  --card-grad-to:   #6b4bd6; /* roxo-azulado */
-  --card-radius: 16px;
-  --root-radius: 18px;
-  --text-glow: rgba(6,12,40,0.22);
-  --transition-fast: 240ms cubic-bezier(.2,.9,.3,1);
+/* Clean and minimal design - scoped to widget */
+#<?php echo $widget_id; ?> { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
 }
 
-/* Ensure widget font stacking and base */
-#<?php echo $widget_id; ?> { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-
-/* panel root - subtle rounded white background to match admin and a soft outer shadow */
+/* Panel container */
 #<?php echo $widget_id; ?> .panel_s {
-    border-radius: var(--root-radius) !important;
-    padding: 14px !important;
-    background: #ffffff; /* keep panel white so rest of admin remains consistent */
-    box-shadow: 0 10px 30px rgba(15,23,42,0.06);
-    border: 1px solid rgba(15,23,42,0.04);
-    overflow: visible;
-    position: relative;
+    border-radius: 12px;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
 }
 
-/* Panel-body - transparent so cards show gradient, but remains readable */
 #<?php echo $widget_id; ?> .panel-body {
-    position: relative;
-    z-index: 2;
     background: transparent;
-    border-radius: 12px;
-    padding: 16px;
-    color: #111827;
+    padding: 0;
 }
 
-/* Ensure any internal .panel-body inside cards does not override color */
-#<?php echo $widget_id; ?> .asaas-metric-card .panel-body {
-    background: transparent !important;
-    color: inherit !important;
-}
-
-/* Hover effect - lift card */
+/* Metric cards - subtle hover effect */
 #<?php echo $widget_id; ?> .asaas-metric-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 36px 110px rgba(20,28,80,0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-color: #d1d5db;
 }
 
-/* Eye toggle - keep visible on white panel */
+/* Eye toggle button */
 #<?php echo $widget_id; ?> #toggle-balance-visibility {
-    transition: all 180ms ease;
-    border: 1px solid rgba(15,23,42,0.06) !important;
-    background: rgba(255,255,255,0.98) !important;
-    color: #0f172a !important;
-    border-radius: 8px !important;
-    padding: 6px 8px !important;
-    box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+    transition: all 0.2s ease;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #374151;
+    border-radius: 6px;
+    padding: 6px 10px;
 }
+
+#<?php echo $widget_id; ?> #toggle-balance-visibility:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
 #<?php echo $widget_id; ?> #toggle-balance-visibility .fa {
-    color: #0f172a !important;
+    color: #6b7280;
 }
 
-/* Filters - small visual nicety */
+/* Button group styling */
 #<?php echo $widget_id; ?> .btn-group .btn {
-    border-radius: 10px !important;
-    font-weight:700;
-    margin-right:6px;
-    padding:8px 12px;
-}
-#<?php echo $widget_id; ?> .btn-group .btn.btn-primary {
-    background: linear-gradient(90deg, rgba(79,102,240,0.12), rgba(107,75,214,0.08));
-    border-color: rgba(79,102,240,0.18);
-    color: #0f172a;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 6px 14px;
+    transition: all 0.2s ease;
 }
 
-/* Table styling */
+#<?php echo $widget_id; ?> .btn-group .btn-info {
+    background: #0891b2;
+    border-color: #0891b2;
+    color: #ffffff;
+}
+
+#<?php echo $widget_id; ?> .btn-group .btn-info:hover {
+    background: #0e7490;
+    border-color: #0e7490;
+}
+
+#<?php echo $widget_id; ?> .btn-group .btn-default {
+    background: #ffffff;
+    border-color: #e5e7eb;
+    color: #374151;
+}
+
+#<?php echo $widget_id; ?> .btn-group .btn-default:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+/* Table styling - clean and minimal */
 #<?php echo $widget_id; ?> .table-responsive {
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 8px 30px rgba(3,10,40,0.06);
-    margin-top: 12px;
+    border: 1px solid #e5e7eb;
+    margin-top: 10px;
 }
+
 #<?php echo $widget_id; ?> .table thead {
-    background: linear-gradient(90deg, var(--card-grad-from), var(--card-grad-to));
-    color: #fff !important;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
 }
+
+#<?php echo $widget_id; ?> .table thead th {
+    color: #374151;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 16px;
+    border: none;
+}
+
 #<?php echo $widget_id; ?> .table {
     background: #fff;
     color: #111827;
+    margin-bottom: 0;
 }
-#<?php echo $widget_id; ?> .table th,
+
 #<?php echo $widget_id; ?> .table td {
-    padding: 12px 14px;
-    vertical-align: middle;
+    padding: 12px 16px;
+    border-top: 1px solid #f3f4f6;
+    font-size: 13px;
 }
+
 #<?php echo $widget_id; ?> .table tbody tr:hover {
-    background-color: rgba(99,102,241,0.04) !important;
-    transform: translateY(-2px);
+    background-color: #f9fafb;
 }
 
-/* Alerts color fix */
+#<?php echo $widget_id; ?> .table .text-success {
+    color: #059669;
+}
+
+#<?php echo $widget_id; ?> .table .text-danger {
+    color: #dc2626;
+}
+
+/* Alerts */
 #<?php echo $widget_id; ?> .alert {
-    color: #111827;
+    border-radius: 8px;
+    border: 1px solid;
+    padding: 12px 16px;
+    font-size: 13px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 900px) {
-    #<?php echo $widget_id; ?> .col-md-4 { margin-bottom: 12px; }
+#<?php echo $widget_id; ?> .alert-info {
+    background: #f0f9ff;
+    border-color: #bae6fd;
+    color: #0c4a6e;
+}
+
+#<?php echo $widget_id; ?> .alert-warning {
+    background: #fffbeb;
+    border-color: #fde68a;
+    color: #78350f;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #<?php echo $widget_id; ?> .col-md-4 { 
+        margin-bottom: 12px; 
+    }
 }
 </style>
 
@@ -423,45 +462,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
       if(btnIcon){ btnIcon.classList.remove('fa-eye'); btnIcon.classList.add('fa-eye-slash'); }
     }
   } catch(e) {
-    try { console && console.error && console.error('asaas init error', e); } catch(_) {}
-  }
-})();
-</script>
-
-<!-- Lightweight visual tilt for metric cards (non-invasive) -->
-<script>
-(function(){
-  try {
-    var cards = document.querySelectorAll('#<?php echo $widget_id; ?> .asaas-metric-card');
-    if(!cards || cards.length === 0) return;
-    cards.forEach(function(card){
-      var rect = card.getBoundingClientRect();
-      var updateRect = function(){ rect = card.getBoundingClientRect(); };
-      window.addEventListener('resize', updateRect);
-
-      var onMove = function(e){
-        var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        var clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        var x = (clientX - rect.left) / rect.width - 0.5;
-        var y = (clientY - rect.top) / rect.height - 0.5;
-        var rx = (-y * 4).toFixed(2);
-        var ry = (x * 7).toFixed(2);
-        card.style.transform = 'translateZ(10px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) scale(1.02)';
-        card.style.transition = 'transform 120ms linear';
-      };
-      var onLeave = function(){
-        card.style.transform = '';
-        card.style.transition = '';
-      };
-
-      card.addEventListener('mousemove', onMove);
-      card.addEventListener('touchmove', onMove, {passive:true});
-      card.addEventListener('mouseleave', onLeave);
-      card.addEventListener('touchend', onLeave);
-      card.addEventListener('blur', onLeave);
-    });
-  } catch(e) {
-    // Tilt effect initialization failed - non-critical
+    // Silent fail
   }
 })();
 </script>

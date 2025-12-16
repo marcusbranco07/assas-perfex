@@ -196,14 +196,14 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
                 <div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> <?php echo $error_message; ?></div>
             <?php else: ?>
 
-                <!-- Cards de métricas com gradiente moderno e hover animado -->
+                <!-- Cards de métricas com gradiente mais leve e hover animado -->
                 <div class="row" style="margin-bottom: 24px;">
                     <div class="col-md-4">
                         <div class="asaas-metric-card"
-                             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 28px 24px; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); position: relative; overflow: hidden; border: none;">
-                            <div class="card-shine" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%); transform: rotate(45deg); pointer-events: none;"></div>
+                             style="background: linear-gradient(135deg, #8b9eff 0%, #a98dd6 100%); border-radius: 16px; padding: 28px 24px; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); position: relative; overflow: hidden; border: none;">
+                            <div class="card-shine" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 100%); transform: rotate(45deg); pointer-events: none;"></div>
                             <div style="text-align: center; position: relative; z-index: 1;">
-                                <div style="font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Comissões Weboox</div>
+                                <div style="font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.95); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Comissões Weboox</div>
                                 <div style="font-size: 32px; font-weight: 700; color: #ffffff; line-height: 1.2;">R$ <?php echo $commissions_balance_fmt; ?></div>
                             </div>
                         </div>
@@ -211,10 +211,10 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 
                     <div class="col-md-4">
                         <div class="asaas-metric-card"
-                             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 28px 24px; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); position: relative; overflow: hidden; border: none;">
-                            <div class="card-shine" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%); transform: rotate(45deg); pointer-events: none;"></div>
+                             style="background: linear-gradient(135deg, #8b9eff 0%, #a98dd6 100%); border-radius: 16px; padding: 28px 24px; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); position: relative; overflow: hidden; border: none;">
+                            <div class="card-shine" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 100%); transform: rotate(45deg); pointer-events: none;"></div>
                             <div style="text-align: center; position: relative; z-index: 1;">
-                                <div style="font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Recebidos</div>
+                                <div style="font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.95); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Recebidos</div>
                                 <div style="font-size: 32px; font-weight: 700; color: #ffffff; line-height: 1.2;">R$ <?php echo $received_total_fmt; ?></div>
                             </div>
                         </div>
@@ -222,10 +222,10 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 
                     <div class="col-md-4">
                         <div class="asaas-metric-card"
-                             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 28px 24px; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); position: relative; overflow: hidden; border: none;">
-                            <div class="card-shine" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%); transform: rotate(45deg); pointer-events: none;"></div>
+                             style="background: linear-gradient(135deg, #8b9eff 0%, #a98dd6 100%); border-radius: 16px; padding: 28px 24px; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); position: relative; overflow: hidden; border: none;">
+                            <div class="card-shine" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 100%); transform: rotate(45deg); pointer-events: none;"></div>
                             <div style="text-align: center; position: relative; z-index: 1;">
-                                <div style="font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Saldo Atual</div>
+                                <div style="font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.95); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Saldo Atual</div>
                                 <div style="font-size: 32px; font-weight: 700; color: #ffffff; line-height: 1.2;">
                                     <span id="balance-value" data-real="<?php echo htmlspecialchars($available_balance_fmt, ENT_QUOTES, 'UTF-8'); ?>">R$ ********</span>
                                 </div>
@@ -301,18 +301,28 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
 }
 
-/* Panel container with light gradient background */
+/* Panel container with lighter gradient background */
 #<?php echo $widget_id; ?> .panel_s {
     border-radius: 16px;
     padding: 24px;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(139, 158, 255, 0.08) 0%, rgba(169, 141, 214, 0.08) 100%);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(102, 126, 234, 0.1);
+    border: 1px solid rgba(139, 158, 255, 0.15);
 }
 
 #<?php echo $widget_id; ?> .panel-body {
     background: transparent;
     padding: 0;
+}
+
+/* Enable drag and drop */
+#<?php echo $widget_id; ?> .widget-dragger {
+    cursor: move;
+    cursor: grab;
+}
+
+#<?php echo $widget_id; ?> .widget-dragger:active {
+    cursor: grabbing;
 }
 
 /* Title hover effect */
@@ -322,7 +332,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 }
 
 #<?php echo $widget_id; ?> .widget-title:hover {
-    color: #6366f1;
+    color: #7c8cfa;
     transform: translateX(5px);
 }
 
@@ -362,7 +372,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 
 #<?php echo $widget_id; ?> #toggle-balance-visibility:hover {
     background: #f3f4f6;
-    border-color: #6366f1;
+    border-color: #7c8cfa;
     transform: scale(1.05);
 }
 
@@ -372,7 +382,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 }
 
 #<?php echo $widget_id; ?> #toggle-balance-visibility:hover .fa {
-    color: #6366f1;
+    color: #7c8cfa;
 }
 
 /* Button group styling */
@@ -383,19 +393,19 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
     transition: all 0.3s ease;
 }
 
-/* Selected filter button with light gradient and transparency */
+/* Selected filter button with gradient matching cards */
 #<?php echo $widget_id; ?> .btn-group .btn-info {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-    border-color: rgba(102, 126, 234, 0.3);
-    color: #667eea;
+    background: linear-gradient(135deg, rgba(139, 158, 255, 0.2) 0%, rgba(169, 141, 214, 0.2) 100%);
+    border-color: rgba(139, 158, 255, 0.4);
+    color: #7c8cfa;
     font-weight: 600;
 }
 
 #<?php echo $widget_id; ?> .btn-group .btn-info:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+    background: linear-gradient(135deg, rgba(139, 158, 255, 0.35) 0%, rgba(169, 141, 214, 0.35) 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.3);
-    border-color: rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 6px -1px rgba(139, 158, 255, 0.4);
+    border-color: rgba(139, 158, 255, 0.5);
 }
 
 #<?php echo $widget_id; ?> .btn-group .btn-default {
@@ -405,9 +415,9 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 }
 
 #<?php echo $widget_id; ?> .btn-group .btn-default:hover {
-    background: rgba(102, 126, 234, 0.05);
-    border-color: rgba(102, 126, 234, 0.2);
-    color: #667eea;
+    background: rgba(139, 158, 255, 0.08);
+    border-color: rgba(139, 158, 255, 0.25);
+    color: #7c8cfa;
     transform: translateY(-1px);
 }
 
@@ -420,7 +430,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 }
 
 #<?php echo $widget_id; ?> .table thead {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #8b9eff 0%, #a98dd6 100%);
     border-bottom: none;
 }
 
@@ -452,7 +462,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 }
 
 #<?php echo $widget_id; ?> .table tbody tr:hover {
-    background-color: rgba(102, 126, 234, 0.05);
+    background-color: rgba(139, 158, 255, 0.08);
     transform: translateX(4px);
 }
 

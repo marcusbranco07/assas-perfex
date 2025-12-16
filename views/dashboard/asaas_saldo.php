@@ -171,8 +171,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
             <!-- Header -->
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 24px;">
                 <div style="display:flex; align-items:center; gap: 12px;">
-                    <h4 style="margin:0; font-size: 20px; font-weight: 600; color: #111827;">
-                        <i class="fa fa-bank" style="margin-right:10px; color:#6366f1;"></i>
+                    <h4 class="widget-title" style="margin:0; font-size: 20px; font-weight: 600; color: #111827;">
                         Conta Bancária | Extrato
                     </h4>
 
@@ -302,18 +301,29 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
 }
 
-/* Panel container */
+/* Panel container with light gradient background */
 #<?php echo $widget_id; ?> .panel_s {
     border-radius: 16px;
     padding: 24px;
-    background: #ffffff;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    border: 1px solid #e5e7eb;
+    border: 1px solid rgba(102, 126, 234, 0.1);
 }
 
 #<?php echo $widget_id; ?> .panel-body {
     background: transparent;
     padding: 0;
+}
+
+/* Title hover effect */
+#<?php echo $widget_id; ?> .widget-title {
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+#<?php echo $widget_id; ?> .widget-title:hover {
+    color: #6366f1;
+    transform: translateX(5px);
 }
 
 /* Metric cards - modern gradient with animated hover */
@@ -373,16 +383,19 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
     transition: all 0.3s ease;
 }
 
+/* Selected filter button with light gradient and transparency */
 #<?php echo $widget_id; ?> .btn-group .btn-info {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-color: #667eea;
-    color: #ffffff;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    border-color: rgba(102, 126, 234, 0.3);
+    color: #667eea;
+    font-weight: 600;
 }
 
 #<?php echo $widget_id; ?> .btn-group .btn-info:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.3);
+    border-color: rgba(102, 126, 234, 0.4);
 }
 
 #<?php echo $widget_id; ?> .btn-group .btn-default {
@@ -392,8 +405,9 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 }
 
 #<?php echo $widget_id; ?> .btn-group .btn-default:hover {
-    background: #f9fafb;
-    border-color: #d1d5db;
+    background: rgba(102, 126, 234, 0.05);
+    border-color: rgba(102, 126, 234, 0.2);
+    color: #667eea;
     transform: translateY(-1px);
 }
 
@@ -438,7 +452,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 }
 
 #<?php echo $widget_id; ?> .table tbody tr:hover {
-    background-color: #f9fafb;
+    background-color: rgba(102, 126, 234, 0.05);
     transform: translateX(4px);
 }
 

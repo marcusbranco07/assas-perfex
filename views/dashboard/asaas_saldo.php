@@ -207,7 +207,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
                         <div class="asaas-metric-card panel_s"
                              style="background: linear-gradient(135deg, #4f66f0 6%, #6b4bd6 100%); color: #ffffff; border-radius: 16px; border: none; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden;">
                             <div class="panel-body text-center" style="background: transparent; color: inherit; padding:25px; position: relative; z-index: 1;">
-                                <h5 style="margin-top:0; font-size:12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: rgba(255,255,255,0.95); opacity: 0.95;">Comissões Weboox</h5>
+                                <h5 style="margin-top:0; font-size:12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: rgba(255,255,255,0.95);">Comissões Weboox</h5>
                                 <h3 class="bold" style="margin-bottom:0; font-size: 36px; color: #ffffff; font-weight: 800; margin-top: 10px;">R$ <?php echo $commissions_balance_fmt; ?></h3>
                             </div>
                         </div>
@@ -217,7 +217,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
                         <div class="asaas-metric-card panel_s"
                              style="background: linear-gradient(135deg, #4f66f0 6%, #6b4bd6 100%); color: #ffffff; border-radius: 16px; border: none; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden;">
                             <div class="panel-body text-center" style="background: transparent; color: inherit; padding:25px; position: relative; z-index: 1;">
-                                <h5 style="margin-top:0; font-size:12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: rgba(255,255,255,0.95); opacity: 0.95;">Recebidos</h5>
+                                <h5 style="margin-top:0; font-size:12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: rgba(255,255,255,0.95);">Recebidos</h5>
                                 <h3 class="bold" style="margin-bottom:0; font-size: 36px; color: #ffffff; font-weight: 800; margin-top: 10px;">R$ <?php echo $received_total_fmt; ?></h3>
                             </div>
                         </div>
@@ -227,7 +227,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
                         <div class="asaas-metric-card panel_s"
                              style="background: linear-gradient(135deg, #4f66f0 6%, #6b4bd6 100%); color: #ffffff; border-radius: 16px; border: none; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden;">
                             <div class="panel-body text-center" style="background: transparent; color: inherit; padding:25px; position: relative; z-index: 1;">
-                                <h5 style="margin-top:0; font-size:12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: rgba(255,255,255,0.95); opacity: 0.95;">Saldo Atual</h5>
+                                <h5 style="margin-top:0; font-size:12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: rgba(255,255,255,0.95);">Saldo Atual</h5>
                                 <h3 class="bold" style="margin-bottom:0; font-size: 36px; font-weight: 800; margin-top: 10px; color: #ffffff;">
                                     <span id="balance-value" data-real="<?php echo htmlspecialchars($available_balance_fmt, ENT_QUOTES, 'UTF-8'); ?>" style="color: #ffffff;">R$ ********</span>
                                 </h3>
@@ -461,7 +461,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
       card.addEventListener('blur', onLeave);
     });
   } catch(e) {
-    try { console && console.warn && console.warn('tilt init failed', e); } catch(_) {}
+    // Tilt effect initialization failed - non-critical
   }
 })();
 </script>

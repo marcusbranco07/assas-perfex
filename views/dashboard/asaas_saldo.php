@@ -169,11 +169,11 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
             <div class="widget-dragger"></div>
 
             <!-- Header -->
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 20px;">
-                <div style="display:flex; align-items:center; gap: 10px;">
-                    <h4 style="margin:0; font-size: 18px; font-weight: 600; color: #111827;">
-                        <i class="fa fa-bank" style="margin-right:8px; color:#0891b2;"></i>
-                        Conta Bancária
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 24px;">
+                <div style="display:flex; align-items:center; gap: 12px;">
+                    <h4 style="margin:0; font-size: 20px; font-weight: 600; color: #111827;">
+                        <i class="fa fa-bank" style="margin-right:10px; color:#6366f1;"></i>
+                        Conta Bancária | Extrato
                     </h4>
 
                     <!-- Botão de olho para mostrar/ocultar saldo -->
@@ -189,7 +189,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 
                 <!-- Logo do Asaas -->
                 <div>
-                    <img src="https://raw.githubusercontent.com/99labdev/n8n-nodes-asaas/HEAD/logo.png" alt="Asaas Logo" style="height:20px; opacity: 0.7;" />
+                    <img src="https://raw.githubusercontent.com/99labdev/n8n-nodes-asaas/HEAD/logo.png" alt="Asaas Logo" style="height:24px;" />
                 </div>
             </div>
 
@@ -197,34 +197,37 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
                 <div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> <?php echo $error_message; ?></div>
             <?php else: ?>
 
-                <!-- Cards de métricas com design clean e minimalista -->
-                <div class="row" style="margin-bottom: 20px;">
+                <!-- Cards de métricas com gradiente moderno e hover animado -->
+                <div class="row" style="margin-bottom: 24px;">
                     <div class="col-md-4">
                         <div class="asaas-metric-card"
-                             style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px 20px; transition: all 0.2s ease; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);">
-                            <div style="text-align: center;">
-                                <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Comissões Weboox</div>
-                                <div style="font-size: 28px; font-weight: 700; color: #111827; line-height: 1.2;">R$ <?php echo $commissions_balance_fmt; ?></div>
+                             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 28px 24px; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); position: relative; overflow: hidden; border: none;">
+                            <div class="card-shine" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%); transform: rotate(45deg); pointer-events: none;"></div>
+                            <div style="text-align: center; position: relative; z-index: 1;">
+                                <div style="font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Comissões Weboox</div>
+                                <div style="font-size: 32px; font-weight: 700; color: #ffffff; line-height: 1.2;">R$ <?php echo $commissions_balance_fmt; ?></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="asaas-metric-card"
-                             style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px 20px; transition: all 0.2s ease; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);">
-                            <div style="text-align: center;">
-                                <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Recebidos</div>
-                                <div style="font-size: 28px; font-weight: 700; color: #059669; line-height: 1.2;">R$ <?php echo $received_total_fmt; ?></div>
+                             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 28px 24px; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); position: relative; overflow: hidden; border: none;">
+                            <div class="card-shine" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%); transform: rotate(45deg); pointer-events: none;"></div>
+                            <div style="text-align: center; position: relative; z-index: 1;">
+                                <div style="font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Recebidos</div>
+                                <div style="font-size: 32px; font-weight: 700; color: #ffffff; line-height: 1.2;">R$ <?php echo $received_total_fmt; ?></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="asaas-metric-card"
-                             style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px 20px; transition: all 0.2s ease; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);">
-                            <div style="text-align: center;">
-                                <div style="font-size: 11px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Saldo Atual</div>
-                                <div style="font-size: 28px; font-weight: 700; color: #111827; line-height: 1.2;">
+                             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 28px 24px; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); position: relative; overflow: hidden; border: none;">
+                            <div class="card-shine" style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to bottom right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%); transform: rotate(45deg); pointer-events: none;"></div>
+                            <div style="text-align: center; position: relative; z-index: 1;">
+                                <div style="font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.9); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Saldo Atual</div>
+                                <div style="font-size: 32px; font-weight: 700; color: #ffffff; line-height: 1.2;">
                                     <span id="balance-value" data-real="<?php echo htmlspecialchars($available_balance_fmt, ENT_QUOTES, 'UTF-8'); ?>">R$ ********</span>
                                 </div>
                             </div>
@@ -294,17 +297,17 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 </div>
 
 <style>
-/* Clean and minimal design - scoped to widget */
+/* Modern gradient design with animated hover effects */
 #<?php echo $widget_id; ?> { 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
 }
 
 /* Panel container */
 #<?php echo $widget_id; ?> .panel_s {
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 16px;
+    padding: 24px;
     background: #ffffff;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
     border: 1px solid #e5e7eb;
 }
 
@@ -313,49 +316,73 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
     padding: 0;
 }
 
-/* Metric cards - subtle hover effect */
+/* Metric cards - modern gradient with animated hover */
+#<?php echo $widget_id; ?> .asaas-metric-card {
+    cursor: pointer;
+    will-change: transform;
+}
+
 #<?php echo $widget_id; ?> .asaas-metric-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    border-color: #d1d5db;
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+#<?php echo $widget_id; ?> .asaas-metric-card:hover .card-shine {
+    animation: shine 0.75s ease-in-out;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
 }
 
 /* Eye toggle button */
 #<?php echo $widget_id; ?> #toggle-balance-visibility {
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     border: 1px solid #e5e7eb;
     background: #ffffff;
     color: #374151;
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 6px 10px;
 }
 
 #<?php echo $widget_id; ?> #toggle-balance-visibility:hover {
-    background: #f9fafb;
-    border-color: #d1d5db;
+    background: #f3f4f6;
+    border-color: #6366f1;
+    transform: scale(1.05);
 }
 
 #<?php echo $widget_id; ?> #toggle-balance-visibility .fa {
     color: #6b7280;
+    transition: color 0.3s ease;
+}
+
+#<?php echo $widget_id; ?> #toggle-balance-visibility:hover .fa {
+    color: #6366f1;
 }
 
 /* Button group styling */
 #<?php echo $widget_id; ?> .btn-group .btn {
     font-weight: 500;
     font-size: 13px;
-    padding: 6px 14px;
-    transition: all 0.2s ease;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
 }
 
 #<?php echo $widget_id; ?> .btn-group .btn-info {
-    background: #0891b2;
-    border-color: #0891b2;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
     color: #ffffff;
 }
 
 #<?php echo $widget_id; ?> .btn-group .btn-info:hover {
-    background: #0e7490;
-    border-color: #0e7490;
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(102, 126, 234, 0.4);
 }
 
 #<?php echo $widget_id; ?> .btn-group .btn-default {
@@ -367,28 +394,29 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 #<?php echo $widget_id; ?> .btn-group .btn-default:hover {
     background: #f9fafb;
     border-color: #d1d5db;
+    transform: translateY(-1px);
 }
 
-/* Table styling - clean and minimal */
+/* Table styling - modern gradient header */
 #<?php echo $widget_id; ?> .table-responsive {
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
     border: 1px solid #e5e7eb;
     margin-top: 10px;
 }
 
 #<?php echo $widget_id; ?> .table thead {
-    background: #f9fafb;
-    border-bottom: 1px solid #e5e7eb;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-bottom: none;
 }
 
 #<?php echo $widget_id; ?> .table thead th {
-    color: #374151;
+    color: #ffffff;
     font-weight: 600;
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding: 12px 16px;
+    padding: 14px 16px;
     border: none;
 }
 
@@ -402,32 +430,40 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
     padding: 12px 16px;
     border-top: 1px solid #f3f4f6;
     font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+#<?php echo $widget_id; ?> .table tbody tr {
+    transition: all 0.2s ease;
 }
 
 #<?php echo $widget_id; ?> .table tbody tr:hover {
     background-color: #f9fafb;
+    transform: translateX(4px);
 }
 
 #<?php echo $widget_id; ?> .table .text-success {
     color: #059669;
+    font-weight: 600;
 }
 
 #<?php echo $widget_id; ?> .table .text-danger {
     color: #dc2626;
+    font-weight: 600;
 }
 
 /* Alerts */
 #<?php echo $widget_id; ?> .alert {
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid;
     padding: 12px 16px;
     font-size: 13px;
 }
 
 #<?php echo $widget_id; ?> .alert-info {
-    background: #f0f9ff;
-    border-color: #bae6fd;
-    color: #0c4a6e;
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1e40af;
 }
 
 #<?php echo $widget_id; ?> .alert-warning {
@@ -439,7 +475,7 @@ $widget_id = 'widget-' . basename(__FILE__, '.php');
 /* Responsive */
 @media (max-width: 768px) {
     #<?php echo $widget_id; ?> .col-md-4 { 
-        margin-bottom: 12px; 
+        margin-bottom: 16px; 
     }
 }
 </style>
